@@ -5,5 +5,5 @@ import org.springframework.stereotype.Service
 
 @Service
 interface PublicationRatingService {
-    fun calcActualRating(publication: Publication): Int
+    fun calcActualRating(publication: Publication): Double
 }

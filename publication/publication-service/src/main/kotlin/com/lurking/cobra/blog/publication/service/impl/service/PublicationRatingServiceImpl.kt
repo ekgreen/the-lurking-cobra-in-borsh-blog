@@ -5,7 +5,7 @@ import com.lurking.cobra.blog.publication.service.api.service.PublicationRatingS
 
 class PublicationRatingServiceImpl : PublicationRatingService{
 
-    override fun calcActualRating(publication: Publication): Int {
-        return 10
+    override fun calcActualRating(publication: Publication): Double {
+        return 10.0
     }
 }
