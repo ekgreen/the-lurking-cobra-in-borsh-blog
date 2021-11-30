@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*
 
 
 @RestController
-class PublicationServiceController {
+class PublicationController {
     @GetMapping("/post")
     fun getPublicationForPost(): PublicationDto {
         return PublicationDto()
