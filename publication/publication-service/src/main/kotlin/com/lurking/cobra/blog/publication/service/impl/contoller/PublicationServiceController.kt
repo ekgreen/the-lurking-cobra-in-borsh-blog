@@ -1,10 +1,7 @@
 package com.lurking.cobra.blog.publication.service.impl.contoller
 
 import com.lurking.cobra.blog.publication.service.api.model.dto.PublicationDto
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PatchMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 
 @RestController
@@ -14,8 +11,8 @@ class PublicationServiceController {
         return PublicationDto()
     }
 
-    @GetMapping("/publication")
-    fun getPublicationById(id: Int): PublicationDto {
+    @GetMapping("/publication/{id}")
+    fun getPublicationById(@PathVariable("id") id: Int): PublicationDto {
         return PublicationDto()
     }
 
