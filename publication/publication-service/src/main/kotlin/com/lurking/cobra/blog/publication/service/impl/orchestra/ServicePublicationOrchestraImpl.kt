@@ -13,7 +13,7 @@ class ServicePublicationOrchestraImpl(private val publicationRepository: Publica
     private val converter = Mappers.getMapper(PublicationMapper::class.java)
 
     override fun getPublicationById(id: String): Publication {
-        val entity = publicationRepository.findById(id)
+        val entity = publicationRepository.findById(id).orElseThrow()
         return converter.convertEntityToModel(entity)
     }
 

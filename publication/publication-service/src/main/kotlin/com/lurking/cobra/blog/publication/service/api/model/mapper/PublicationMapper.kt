@@ -8,7 +8,7 @@ import java.util.*
 
 @Mapper(componentModel = "spring")
 interface PublicationMapper {
-    fun convertEntityToModel(publicationEntity: Optional<PublicationEntity>) : Publication
+    fun convertEntityToModel(publicationEntity: PublicationEntity) : Publication
 
     fun convertModelToEntity(publication: Publication) : PublicationEntity
 
