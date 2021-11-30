@@ -1,0 +1,6 @@
+blog:
+  generator:
+    habr:
+      subscriptions:
+        - name: scyeng
+          type: COMPANY
