@@ -1,16 +1,17 @@
 package com.lurking.cobra.blog.publication.service.api.model
 
-import com.lurking.cobra.blog.publication.service.api.model.dto.PublicationDto
-import com.lurking.cobra.blog.publication.service.api.model.dto.PublicationMapper
-import com.lurking.cobra.blog.publication.service.api.model.entity.PublicationEntity
+import com.lurking.cobra.blog.publication.service.api.model.entity.Status
 
-// mapstruct
-class PublicationMapperImp : PublicationMapper {
-    override fun convertToDto(publicationEntity: PublicationEntity): PublicationDto {
-        TODO("Not yet implemented")
-    }
 
-    override fun convertToModel(publicationDto: PublicationDto): PublicationEntity {
-        TODO("Not yet implemented")
-    }
+class Publication(
+    var id: String? = null,
+    var uri: String,
+    var title: String,
+    var rating: Int,
+    var tags: MutableSet<String> = mutableSetOf(),
+    var key_words: MutableSet<String> = mutableSetOf(),
+    var reactions: MutableMap<String, Int> = mutableMapOf(),
+    var status: Enum<Status>
+) {
+
 }
