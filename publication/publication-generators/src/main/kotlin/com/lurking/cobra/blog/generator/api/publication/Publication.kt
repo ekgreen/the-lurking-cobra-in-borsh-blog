@@ -1,4 +1,3 @@
 package com.lurking.cobra.blog.generator.api.publication
 
-class Publication {
-}
+data class Publication(val id: String, val urn: String)

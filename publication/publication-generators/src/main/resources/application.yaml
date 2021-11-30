@@ -3,4 +3,4 @@ blog:
     habr:
       subscriptions:
         - name: scyeng
-          type: company
+          type: COMPANY

@@ -5,8 +5,8 @@ package com.lurking.cobra.blog.generator.api.watcher.habr
  */
 data class Hub(
     // название подписки (на кого подписаны)
-    private val name: String,
+    val name: String,
     // тип подписки (на что подписаны)
-    private val type: HubType
+    val type: HubType
 )
 
