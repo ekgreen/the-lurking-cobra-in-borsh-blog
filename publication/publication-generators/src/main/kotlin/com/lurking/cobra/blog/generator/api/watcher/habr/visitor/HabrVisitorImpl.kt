@@ -6,6 +6,8 @@ import com.lurking.cobra.blog.generator.api.watcher.habr.HubType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.jsoup.Jsoup
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class HabrVisitorImpl(private val client: OkHttpClient) : HabrVisitor {
 
@@ -42,10 +44,32 @@ class HabrVisitorImpl(private val client: OkHttpClient) : HabrVisitor {
 
         val html = call(url) ?: return emptyList()
 
-        return Jsoup.parse(html).select("article").asSequence()
+        val id = Jsoup.parse(html).select("article")
             .map { element -> element.attr("id") }
-            .map { hubId -> Publication(id = hubId, urn = "habr") }
             .toList()
+
+        val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        val dateString = Jsoup.parse(html).select("time")
+            .map { element -> element.attr("datetime") }
+            .toMutableList()
+        val date: List<LocalDateTime> = dateString
+            .map { dateStr -> LocalDateTime.parse(dateStr, dateTimeFormatter) }
+
+        //Тут если парсить по датам, как я сделал, то находится в самом низу (2 если компания, 1 если пользователь
+        //какие-то древние даты, которые даже не отображаются на странице, обрезаю их
+        if (url.contains("/company/")) {
+            dateString.removeAt(dateString.lastIndex)
+        }
+        dateString.removeAt(dateString.lastIndex)
+
+        val pagePublications: List<Publication> = id.map { Publication(it, "habr") }
+
+        //мб я тотал додик, но не пришло в голову задать даты постов лучше, чем так, хотя думаю он есть
+        for (i in 0 until 20) {
+            pagePublications[i].timestamp = date[i]
+        }
+
+        return pagePublications
     }
 
     private fun call(url: String): String? {
