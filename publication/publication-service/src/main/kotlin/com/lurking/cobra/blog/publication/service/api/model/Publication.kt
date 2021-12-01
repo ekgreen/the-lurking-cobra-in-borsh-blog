@@ -1,5 +1,17 @@
 package com.lurking.cobra.blog.publication.service.api.model
 
-// mapstruct
-class Publication {
+import com.lurking.cobra.blog.publication.service.api.model.entity.Status
+
+
+class Publication(
+    var id: String? = null,
+    var uri: String,
+    var title: String,
+    var rating: Double,
+    var tags: MutableSet<String> = mutableSetOf(),
+    var key_words: MutableSet<String> = mutableSetOf(),
+    var reactions: MutableMap<String, Int> = mutableMapOf(),
+    var status: Status
+) {
+
 }
