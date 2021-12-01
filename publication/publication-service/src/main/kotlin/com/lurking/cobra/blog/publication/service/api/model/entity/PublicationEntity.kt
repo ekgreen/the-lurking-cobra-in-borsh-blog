@@ -16,6 +16,3 @@ data class PublicationEntity(
 ) {
 }
 
-enum class Status {
-    GROW, FROZEN, PUBLICATION_READY
-}
