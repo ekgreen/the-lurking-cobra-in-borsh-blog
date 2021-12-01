@@ -4,7 +4,9 @@ import com.lurking.cobra.blog.publication.service.api.model.Publication
 import com.lurking.cobra.blog.publication.service.api.model.PublicationEvent
 import com.lurking.cobra.blog.publication.service.api.model.dto.ReactionEvent
 
-// todo javadocs
+/**
+ * Интерфейс, представляющий методы для работы с бизнес-логикой сервиса публикации
+ */
 interface ServicePublicationOrchestration {
 
     fun findPublicationById(id: String): Publication

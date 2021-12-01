@@ -1,14 +1,21 @@
 package com.lurking.cobra.blog.publication.service.impl.orchestration
 
 import com.lurking.cobra.blog.publication.service.api.model.Publication
+import com.lurking.cobra.blog.publication.service.api.model.PublicationEvent
+import com.lurking.cobra.blog.publication.service.api.model.dto.ReactionEvent
 import com.lurking.cobra.blog.publication.service.api.model.mapper.PublicationMapper
 import com.lurking.cobra.blog.publication.service.api.orchestration.ServicePublicationOrchestration
 import com.lurking.cobra.blog.publication.service.api.repository.PublicationRepository
 import org.mapstruct.factory.Mappers
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
+/**
+ * Сервис, представляющий методы для работы с бизнес-логикой сервиса публикации.
+ * Использует внедрение PublicationRepository для взаимодействия с базой данных.
+ */
 @Service
-class ServicePublicationOrchestrationImpl(private val publicationRepository: PublicationRepository) : ServicePublicationOrchestration {
+class ServicePublicationOrchestrationImpl @Autowired constructor(val publicationRepository: PublicationRepository) : ServicePublicationOrchestration {
 
     private val converter = Mappers.getMapper(PublicationMapper::class.java)
 
@@ -18,9 +25,6 @@ class ServicePublicationOrchestrationImpl(private val publicationRepository: Pub
     }
 
     override fun createPublication(model: Publication): Publication {
-        if(model.id != null)
-            throw IllegalStateException("")
-
         return savePublication(model)
     }
 
@@ -31,8 +35,17 @@ class ServicePublicationOrchestrationImpl(private val publicationRepository: Pub
         // 2. Сохраняем в репозиторий
         publicationRepository.save(entity)
 
-        return  model
+        return model
     }
+
+    override fun publicationEvent(event: PublicationEvent) {
+        TODO()
+    }
+
+    override fun reactionEvent(event: ReactionEvent) {
+        TODO()
+    }
+
 
     override fun findMostActualPublications(count: Int): List<Publication> {
         // 1. не публиковавшиеся статьи этого месяца [топ приоритет]
