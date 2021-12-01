@@ -22,7 +22,7 @@ class PublicationServiceAmqpController {
     @RequestMapping("/reaction-queue")
     @ResponseBody
     fun reactionQueue(): String {
-        template!!.convertAndSend("queue1", "hello from reaction queue")
+        template!!.convertAndSend("reaction-queue", "hello from reaction queue")
         return "message send to reaction queue"
     }
 }
