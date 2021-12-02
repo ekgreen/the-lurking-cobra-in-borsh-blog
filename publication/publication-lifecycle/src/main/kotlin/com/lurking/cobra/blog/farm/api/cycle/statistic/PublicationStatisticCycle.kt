@@ -5,5 +5,5 @@ import com.lurking.cobra.blog.farm.api.publication.Publication
 
 interface PublicationStatisticCycle {
 
-    fun doPublicationCycle(publication: Publication): PublicationStrategy
+    fun doPublicationCycle(publication: Publication, publisher: (Publication,PublicationStrategy) -> Unit)
 }

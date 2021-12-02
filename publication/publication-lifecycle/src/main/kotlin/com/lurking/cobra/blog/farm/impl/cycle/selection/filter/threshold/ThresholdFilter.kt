@@ -7,15 +7,15 @@ import com.lurking.cobra.blog.farm.api.cycle.selection.filter.threshold.Threshol
 import com.lurking.cobra.blog.farm.api.publication.Publication
 import com.lurking.cobra.blog.farm.api.publication.PublicationStrategy
 
-class ThresholdFilter(private val holdValueProducer: ThresholdValueProducer, private val  publishingRatingService: PublishingRatingService) : SelectionFilter {
+class ThresholdFilter(private val holdValueResolver: ThresholdValueProducer, private val  publishingRatingService: PublishingRatingService) : SelectionFilter {
 
     override fun invoke(publication: Publication, chain: SelectionFilterChain): PublicationStrategy {
         val rate: Double =  publishingRatingCalculation(publication)
 
-        if(rate <= holdValueProducer.freezeUpperBound())
+        if(rate <= holdValueResolver.freezeUpperBound(publication))
             return PublicationStrategy.FREEZE
 
-        if(rate <= holdValueProducer.publishingLowBound())
+        if(rate <= holdValueResolver.publishingLowBound(publication))
             return PublicationStrategy.GROW
 
         return chain.invoke(publication)

@@ -9,7 +9,7 @@ import com.lurking.cobra.blog.farm.api.publication.Publication
 import com.lurking.cobra.blog.farm.api.publication.PublicationStatistic
 import org.springframework.lang.Nullable
 
-class HabrStatisticManager(
+class  HabrStatisticManager(
     private val visitor: HabrStatisticVisitor,
     @Nullable @TextAnalyzer
     private val analyzers: List<TextPublicationAnalyzer> = emptyList()

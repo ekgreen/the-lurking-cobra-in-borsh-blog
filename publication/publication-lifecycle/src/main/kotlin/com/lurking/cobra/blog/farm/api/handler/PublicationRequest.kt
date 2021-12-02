@@ -1,4 +1,4 @@
-package com.lurking.cobra.blog.farm.api.reciever
+package com.lurking.cobra.blog.farm.api.handler
 
 data class PublicationRequest (
     // идентификатор публикации

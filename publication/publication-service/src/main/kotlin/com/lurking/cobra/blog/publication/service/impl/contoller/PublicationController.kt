@@ -8,22 +8,23 @@ import org.springframework.web.bind.annotation.*
 
 
 @RestController
+@RequestMapping("/api/v1")
 class PublicationController(
     private val orchestration: ServicePublicationOrchestration,
     private val mapper: PublicationMapper
 ) {
 
-    @GetMapping("/post")
+    @GetMapping("/find")
     fun findPublicationsByQuery(): List<PublicationDto> {
         return PublicationDto()
     }
 
-    @GetMapping("/publication/{id}")
+    @GetMapping("/view/{id}")
     fun findPublicationById(@PathVariable("id") id: String): PublicationDto {
         return PublicationDto()
     }
 
-    @PostMapping("/publication")
+    @PostMapping("/add")
     fun createPublication(publicationDto: PublicationDto) {
         // 1. валидация публикации от внешнего сервиса
 
@@ -34,7 +35,7 @@ class PublicationController(
         orchestration.createPublication(model)
     }
 
-    @PatchMapping("/publication")
+    @PostMapping("/edit/{id}")
     fun updatePublication(publicationDto: PublicationDto) {
     }
 }

@@ -3,7 +3,7 @@ package com.lurking.cobra.blog.farm.impl.handler
 import com.lurking.cobra.blog.farm.api.cycle.statistic.PublicationStatisticCycle
 import com.lurking.cobra.blog.farm.api.handler.PublicationHandler
 import com.lurking.cobra.blog.farm.api.publication.*
-import com.lurking.cobra.blog.farm.api.reciever.PublicationRequest
+import com.lurking.cobra.blog.farm.api.handler.PublicationRequest
 import com.lurking.cobra.blog.farm.impl.exception.PublicationCycleRuntimeException
 import com.lurking.cobra.blog.farm.impl.exception.VALIDATION_EXCEPTION
 
@@ -25,13 +25,13 @@ class SimplePublicationHandler(
         // если у публикации нет идентификатора - новая, иначе - обновляемая
         // достаточно написать приватную реализацию PublicationCycleHolder и определить нужные методы
         // 3. Обновить данные по статье из PublicationServiceApi если публикация "обновляемая"
-        val publication: Publication = findOrCreatePublication(request)
+        val entry: Publication = findOrCreatePublication(request)
 
         // 4. Проведем операции связанные с ЖЦ публикации
-        val strategy: PublicationStrategy = statisticService.doPublicationCycle(publication)
-
-        // 5. Отбросить сообщение в сервис
-        publisher.publish(publication, strategy)
+        statisticService.doPublicationCycle(entry) { publication, strategy ->
+            // 5. Отбросить сообщение в сервис
+            publisher.publish(publication, strategy)
+        }
     }
 
     private fun validateRequest(request: PublicationRequest) {

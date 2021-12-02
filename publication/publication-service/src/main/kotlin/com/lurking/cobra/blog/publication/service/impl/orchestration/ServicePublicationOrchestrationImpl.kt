@@ -6,6 +6,7 @@ import com.lurking.cobra.blog.publication.service.api.orchestration.ServicePubli
 import com.lurking.cobra.blog.publication.service.api.repository.PublicationRepository
 import org.mapstruct.factory.Mappers
 import org.springframework.stereotype.Service
+import java.time.temporal.Temporal
 
 @Service
 class ServicePublicationOrchestrationImpl(private val publicationRepository: PublicationRepository) : ServicePublicationOrchestration {
@@ -30,7 +31,7 @@ class ServicePublicationOrchestrationImpl(private val publicationRepository: Pub
 
         // 2. Сохраняем в репозиторий
         publicationRepository.save(entity)
-
+        Temporal
         return  model
     }
 

@@ -31,25 +31,26 @@ class PublicationStatisticCycleImpl(
      *  3. публикация - статья попадает в список публикуемых (рекомендована к публикации)
      *
      */
-    override fun doPublicationCycle(publication: Publication) : PublicationStrategy {
+    override fun doPublicationCycle(publication: Publication, publisher: (Publication, PublicationStrategy) -> Unit) {
         // Шаги жизненного цикла
-        return lifecycle(publication)
+        lifecycle(publication, publisher)
     }
 
-    private fun lifecycle(publication: Publication): PublicationStrategy {
+    private fun lifecycle(publication: Publication, publisher: (Publication, PublicationStrategy) -> Unit) {
         // 1. сбор статистики (предусмотреть внутри реализации статистик-менеджера для хабра развилку для новых и обновляемых публикаций)
         val statistic: PublicationStatisticManager = selectStatisticManager(publication)
             ?: throw PublicationCycleRuntimeException(ILLEGAL_EXCEPTION, "сервис по сбору статистики для публикации не { urn = ${publication.urn} uri = ${publication.uri} }")
 
         statistic.enrich(publication)
 
-        // 2. отбор публикаций
+        // 2. Отбор публикаций
         val strategy: PublicationStrategy = selection.selectPublicationStrategy(publication)
 
-        // 3. обработка статуса отбора
-        grow.attachPublication(publication, strategy)
+        // 3. Отправляем публикацию в сервис (сохраняем)
+        publisher(publication, strategy)
 
-        return strategy
+        // 4. отправляем публикацию
+        grow.attachPublication(publication, strategy)
     }
 
     private fun selectStatisticManager(publication: Publication): PublicationStatisticManager? {
