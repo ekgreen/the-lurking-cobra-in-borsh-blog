@@ -1,6 +1,7 @@
 package com.lurking.cobra.blog.publication.service.api.model
 
 import com.lurking.cobra.blog.publication.service.api.model.entity.Status
+import java.util.*
 
 
 class Publication(
@@ -11,7 +12,9 @@ class Publication(
     var tags: MutableSet<String> = mutableSetOf(),
     var key_words: MutableSet<String> = mutableSetOf(),
     var reactions: MutableMap<String, Int> = mutableMapOf(),
-    var status: Status
+    var status: Status,
+    var lastPublication: Date,
+    var publicationCount: Int
 ) {
 
 }

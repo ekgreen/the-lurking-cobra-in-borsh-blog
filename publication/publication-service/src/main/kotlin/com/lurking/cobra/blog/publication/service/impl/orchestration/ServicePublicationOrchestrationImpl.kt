@@ -3,6 +3,7 @@ package com.lurking.cobra.blog.publication.service.impl.orchestration
 import com.lurking.cobra.blog.publication.service.api.model.Publication
 import com.lurking.cobra.blog.publication.service.api.model.PublicationEvent
 import com.lurking.cobra.blog.publication.service.api.model.dto.ReactionEvent
+import com.lurking.cobra.blog.publication.service.api.model.entity.PublicationEntity
 import com.lurking.cobra.blog.publication.service.api.model.mapper.PublicationMapper
 import com.lurking.cobra.blog.publication.service.api.orchestration.ServicePublicationOrchestration
 import com.lurking.cobra.blog.publication.service.api.repository.PublicationRepository
@@ -15,9 +16,8 @@ import org.springframework.stereotype.Service
  * Использует внедрение PublicationRepository для взаимодействия с базой данных.
  */
 @Service
-class ServicePublicationOrchestrationImpl @Autowired constructor(val publicationRepository: PublicationRepository) : ServicePublicationOrchestration {
-
-    private val converter = Mappers.getMapper(PublicationMapper::class.java)
+class ServicePublicationOrchestrationImpl @Autowired constructor(val publicationRepository: PublicationRepository,
+                                                                 val converter :PublicationMapper) : ServicePublicationOrchestration {
 
     override fun findPublicationById(id: String): Publication {
         val entity = publicationRepository.findById(id).orElseThrow()
@@ -51,12 +51,23 @@ class ServicePublicationOrchestrationImpl @Autowired constructor(val publication
         // 1. не публиковавшиеся статьи этого месяца [топ приоритет]
         // max(rating) where status == PUBLICATION _READY && текущая_дата - месяц <= last_publication_timestamp limit count < .count
 
+        val publications: MutableList<PublicationEntity> = publicationRepository.findPublicationThisMonth(count)
 
-        // 2. max(rating) where status == PUBLICATION _READY && текущая_дата - месяц <= last_publication_timestamp
-        // max(rating) where status == PUBLICATION _READY && текущая_дата - месяц <= last_publication_timestamp limit count < .count - loaded
+        if (publications.size < count){
 
-        // 3. [todo делаем позже] от 1 до 5 лет
+            var residue = count - publications.size
 
-        TODO()
+            // 2. max(rating) where status == PUBLICATION _READY && текущая_дата - месяц <= last_publication_timestamp
+            // max(rating) where status == PUBLICATION _READY && текущая_дата - месяц <= last_publication_timestamp limit count < .count - loaded
+            publications.addAll(publicationRepository.findPublicationThisYear(residue))
+
+
+            if (publications.size < count) {
+                // 3. [todo делаем позже] от 1 до 5 лет
+                TODO()
+            }
+        }
+
+        return publications.map { converter.convertEntityToModel(it) }
     }
 }
