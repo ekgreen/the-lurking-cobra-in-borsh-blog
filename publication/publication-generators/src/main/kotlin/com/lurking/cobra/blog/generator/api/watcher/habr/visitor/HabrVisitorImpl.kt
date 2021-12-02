@@ -44,14 +44,11 @@ class HabrVisitorImpl(private val client: OkHttpClient) : HabrVisitor {
 
         val html = call(url) ?: return emptyList()
 
-        val id = Jsoup.parse(html).select("article")
-            .map { element -> element.attr("id") }
-            .toList()
+        val id = parseValues(html, "article", "id")
 
         val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-        val dateString = Jsoup.parse(html).select("time")
-            .map { element -> element.attr("datetime") }
-            .toMutableList()
+        val dateString = parseValues(html, "time", "datetime").toMutableList()
+
         val date: List<LocalDateTime> = dateString
             .map { dateStr -> LocalDateTime.parse(dateStr, dateTimeFormatter) }
 
@@ -77,5 +74,10 @@ class HabrVisitorImpl(private val client: OkHttpClient) : HabrVisitor {
             if (response.code() != 200) null
             else response.body()?.string()
         }
+    }
+
+    private fun parseValues(html: String, cssQuery: String, attributeKey: String): List<String> {
+        return Jsoup.parse(html).select(cssQuery)
+            .map { element -> element.attr(attributeKey) }
     }
 }
