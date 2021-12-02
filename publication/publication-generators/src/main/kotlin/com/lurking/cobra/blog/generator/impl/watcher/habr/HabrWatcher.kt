@@ -19,7 +19,7 @@ class HabrWatcher(private val configuration: HabrConfiguration, private val visi
 
         // 2. Передать подписки в итератор публикаций
 
-        return HabrPublicationIterator( /* todo */ ArrayList(), HabrWatcher::HabrPublicationProducer)
+        return HabrPublicationIterator( /* todo */ ArrayList(), ::HabrPublicationProducer)
     }
 
     private class HabrPublicationProducer(private val publication: Publication) : PublicationProducer {
