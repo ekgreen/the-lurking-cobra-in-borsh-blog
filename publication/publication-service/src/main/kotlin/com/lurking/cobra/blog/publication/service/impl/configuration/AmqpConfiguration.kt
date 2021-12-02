@@ -9,15 +9,19 @@ import org.springframework.context.annotation.Configuration
  */
 @Configuration
 class AmqpConfiguration {
+    companion object {
+        const val PUBLICATION_QUEUE  : String = "publication_queue"
+        const val REACTION_QUEUE     : String = "reaction_queue"
+    }
     /** Очередь - реакции к статье */
     @Bean
     fun reactionQueue(): Queue {
-        return Queue("reaction-queue")
+        return Queue(REACTION_QUEUE)
     }
 
     /** Очередь - уведомление о публикации статьи */
     @Bean
     fun publicationQueue(): Queue {
-        return Queue("publication-queue")
+        return Queue(PUBLICATION_QUEUE)
     }
 }

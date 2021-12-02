@@ -39,13 +39,12 @@ class ServicePublicationOrchestrationImpl @Autowired constructor(val publication
     }
 
     override fun publicationEvent(event: PublicationEvent) {
-        TODO()
+        publicationRepository.publicationEvent(event.publicationId)
     }
 
     override fun reactionEvent(event: ReactionEvent) {
-        TODO()
+        publicationRepository.reactionEvent(event.publicationId, event.reaction)
     }
-
 
     override fun findMostActualPublications(count: Int): List<Publication> {
         // 1. не публиковавшиеся статьи этого месяца [топ приоритет]
