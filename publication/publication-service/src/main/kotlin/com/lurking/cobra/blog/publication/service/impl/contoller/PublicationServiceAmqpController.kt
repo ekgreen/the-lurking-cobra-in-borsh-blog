@@ -1,5 +1,7 @@
 package com.lurking.cobra.blog.publication.service.impl.contoller
 
+import com.lurking.cobra.blog.publication.service.impl.configuration.AmqpConfiguration.Companion.PUBLICATION_QUEUE
+import com.lurking.cobra.blog.publication.service.impl.configuration.AmqpConfiguration.Companion.REACTION_QUEUE
 import org.springframework.amqp.core.AmqpTemplate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
@@ -15,14 +17,14 @@ class PublicationServiceAmqpController {
     @RequestMapping("/publication-queue")
     @ResponseBody
     fun publicationQueue(): String {
-        template!!.convertAndSend("publication-queue", "hello from publication queue")
+        template!!.convertAndSend(PUBLICATION_QUEUE, "hello from publication queue")
         return "message send to publication queue"
     }
 
     @RequestMapping("/reaction-queue")
     @ResponseBody
     fun reactionQueue(): String {
-        template!!.convertAndSend("reaction-queue", "hello from reaction queue")
+        template!!.convertAndSend(REACTION_QUEUE, "hello from reaction queue")
         return "message send to reaction queue"
     }
 }
