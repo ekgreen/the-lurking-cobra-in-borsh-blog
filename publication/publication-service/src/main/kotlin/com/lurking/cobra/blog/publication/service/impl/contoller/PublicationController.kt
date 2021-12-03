@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*
  */
 @RestController
 class PublicationController @Autowired constructor(val orchestration: ServicePublicationOrchestration,
-                                                   @Qualifier("publicationValidatorService") val validator: PublicationValidatorService,
+                                                   val validator: PublicationValidatorService,
                                                    val converter: PublicationMapper) {
 
     /** Метод для получения наиболее актуальных статей */

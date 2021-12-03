@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service
 /**
  * Интерфейс, предоставляющий методы для валидации PublicationDto - сущности на уровне контроллеров
  */
-@Service
 interface PublicationValidatorService {
 
     fun validateCreatePublication(publicationDto: PublicationDto)

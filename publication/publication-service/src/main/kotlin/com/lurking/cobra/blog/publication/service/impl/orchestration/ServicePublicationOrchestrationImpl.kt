@@ -7,9 +7,11 @@ import com.lurking.cobra.blog.publication.service.api.model.entity.PublicationEn
 import com.lurking.cobra.blog.publication.service.api.model.mapper.PublicationMapper
 import com.lurking.cobra.blog.publication.service.api.orchestration.ServicePublicationOrchestration
 import com.lurking.cobra.blog.publication.service.api.repository.PublicationRepository
+import com.lurking.cobra.blog.publication.service.impl.listener.PublicationReactionListenerImpl
 import org.mapstruct.factory.Mappers
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.util.logging.Logger
 
 /**
  * Сервис, представляющий методы для работы с бизнес-логикой сервиса публикации.
@@ -17,7 +19,9 @@ import org.springframework.stereotype.Service
  */
 @Service
 class ServicePublicationOrchestrationImpl @Autowired constructor(val publicationRepository: PublicationRepository,
-                                                                 val converter :PublicationMapper) : ServicePublicationOrchestration {
+                                                                 val converter: PublicationMapper) : ServicePublicationOrchestration {
+
+    var logger: Logger = Logger.getLogger(PublicationReactionListenerImpl::class.java.toString())
 
     override fun findPublicationById(id: String): Publication {
         val entity = publicationRepository.findById(id).orElseThrow()
@@ -39,6 +43,7 @@ class ServicePublicationOrchestrationImpl @Autowired constructor(val publication
     }
 
     override fun publicationEvent(event: PublicationEvent) {
+        logger.info("пришел объект $event")
         publicationRepository.publicationEvent(event.publicationId)
     }
 

@@ -4,6 +4,6 @@ spring:
       host: localhost
       port: 27017
       authentication-database: admin
-      username: admin
-      password: admin
+      username: root
+      password: example
       database: it_blog_bot
