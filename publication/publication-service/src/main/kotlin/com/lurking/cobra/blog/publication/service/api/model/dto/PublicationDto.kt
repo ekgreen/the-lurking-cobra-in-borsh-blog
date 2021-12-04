@@ -12,6 +12,6 @@ data class PublicationDto(
     var key_words: MutableSet<String> = mutableSetOf(),
     var reactions: MutableMap<String, Int> = mutableMapOf(),
     var status: Int,
-    var last_publication: Date,
+    var last_publication: Date? = null,
     var publication_count: Int
 )

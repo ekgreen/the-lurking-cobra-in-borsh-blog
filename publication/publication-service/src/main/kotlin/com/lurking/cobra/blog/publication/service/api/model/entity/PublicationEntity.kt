@@ -25,13 +25,13 @@ data class PublicationEntity(
     var key_words: MutableSet<String> = mutableSetOf(),
 
     @Field("reactions")
-    var reactions: MutableMap<String, Int> = mutableMapOf(),
+    var reactions: MutableMap<String, Int> = mutableMapOf("like" to 0, "comments" to 0, "zipper" to 0),
 
     @Field("status")
     var status: Int,
 
     @Field("last_publication")
-    var last_publication: Date,
+    var last_publication: Date? = null,
 
     @Field("publication_count")
     var publication_count: Int = 0
