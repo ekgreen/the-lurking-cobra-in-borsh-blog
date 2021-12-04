@@ -22,7 +22,7 @@ interface PublicationRepository : MongoRepository<PublicationEntity, String> {
 
     // инкриминируем count_publication
     //@Query("db.publication.update({ _id: ObjectId(\"?0\")}, {\$inc: {count_publication: 1}})")
-    @Query("{'_id': ObjectId(\"61a8e99117cb4739ef830834\")}")
+    @Query("db.publication.update({ _id: ObjectId(\"?0\")}, {\$inc: {count_publication: 1}})")
     fun publicationEvent(id: String)
 
     // инкриминируем reactionName: count

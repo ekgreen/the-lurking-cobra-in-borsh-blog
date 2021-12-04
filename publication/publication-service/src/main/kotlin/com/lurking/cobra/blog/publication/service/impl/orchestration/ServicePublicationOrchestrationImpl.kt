@@ -8,10 +8,15 @@ import com.lurking.cobra.blog.publication.service.api.model.mapper.PublicationMa
 import com.lurking.cobra.blog.publication.service.api.orchestration.ServicePublicationOrchestration
 import com.lurking.cobra.blog.publication.service.api.repository.PublicationRepository
 import com.lurking.cobra.blog.publication.service.impl.listener.PublicationReactionListenerImpl
-import org.mapstruct.factory.Mappers
+import com.mongodb.client.result.UpdateResult
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.mongodb.core.MongoTemplate
+import org.springframework.data.mongodb.core.query.Criteria
+import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.mongodb.core.query.Update
 import org.springframework.stereotype.Service
 import java.util.logging.Logger
+
 
 /**
  * Сервис, представляющий методы для работы с бизнес-логикой сервиса публикации.
@@ -19,7 +24,8 @@ import java.util.logging.Logger
  */
 @Service
 class ServicePublicationOrchestrationImpl @Autowired constructor(val publicationRepository: PublicationRepository,
-                                                                 val converter: PublicationMapper) : ServicePublicationOrchestration {
+                                                                 val converter: PublicationMapper,
+                                                                 val mongoTemplate: MongoTemplate) : ServicePublicationOrchestration {
 
     var logger: Logger = Logger.getLogger(PublicationReactionListenerImpl::class.java.toString())
 
@@ -44,7 +50,18 @@ class ServicePublicationOrchestrationImpl @Autowired constructor(val publication
 
     override fun publicationEvent(event: PublicationEvent) {
         logger.info("пришел объект $event")
-        publicationRepository.publicationEvent(event.publicationId)
+
+        val publicationEntity: PublicationEntity = publicationRepository.findById(event.publicationId).orElseThrow()
+        publicationEntity.publication_count++
+        publicationRepository.save(publicationEntity)
+//        val query = Query()
+//        query.addCriteria(Criteria.where("_id").`is`(event.publicationId))
+//        val update = Update()
+//        update.inc("count_publication", 1)
+//
+//        val result: UpdateResult = mongoTemplate.updateFirst(query, update, PublicationEntity::class.java)
+//        logger.info("update resalt: $result")
+        //publicationRepository.publicationEvent(event.publicationId)
     }
 
     override fun reactionEvent(event: ReactionEvent) {
