@@ -1,6 +1,5 @@
 package com.lurking.cobra.blog.generator.api.publication
 
-// todo реализовать отправку в очередь
 interface PublicationPublisher {
 
     /**

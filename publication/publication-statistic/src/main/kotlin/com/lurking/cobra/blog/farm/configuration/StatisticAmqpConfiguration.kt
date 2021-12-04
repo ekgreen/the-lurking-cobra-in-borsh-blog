@@ -4,7 +4,7 @@ import com.lurking.cobra.blog.farm.PublicationStatisticApplication.Companion.PRO
 import com.lurking.cobra.blog.farm.api.handler.PublicationHandler
 import com.lurking.cobra.blog.farm.api.reciever.PublicationListener
 import com.lurking.cobra.blog.farm.impl.reciever.AmqpPublicationListener
-import org.springframework.amqp.core.Queue
+import org.springframework.amqp.core.*
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory
 import org.springframework.amqp.rabbit.connection.ConnectionFactory
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter
@@ -16,10 +16,11 @@ import org.springframework.context.annotation.Profile
 
 @Configuration
 @Profile(PROD_PROFILE)
-class RetailerAmqpConfiguration {
+class StatisticAmqpConfiguration {
 
     companion object{
-        const val STATISTIC_QUEUE : String = "statistic_queue"
+        const val STATISTIC_QUEUE     : String = "statistic_queue"
+        const val STATISTIC_EXCHANGER : String = "statistic_exchange"
     }
 
     @Bean
@@ -28,9 +29,24 @@ class RetailerAmqpConfiguration {
     }
 
     @Bean
+    fun statisticExchanger(): Exchange {
+        return TopicExchange(STATISTIC_EXCHANGER, true, false)
+    }
+
+    @Bean
     fun amqpPublicationListener(publicationHandler: PublicationHandler): PublicationListener {
         return AmqpPublicationListener(publicationHandler)
     }
+
+    @Bean
+    fun retailerQueueBinding(): Binding {
+        return BindingBuilder
+            .bind(statisticQueue())
+            .to(statisticExchanger())
+            .with("statistic.pushPublication.#")
+            .noargs()
+    }
+
 
     @Bean
     fun jsonMessageConverter(): MessageConverter{

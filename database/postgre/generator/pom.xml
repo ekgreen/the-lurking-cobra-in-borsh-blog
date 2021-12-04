@@ -5,7 +5,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.lurking.cobra.blog</groupId>
-    <artifactId>publication-statistic-database</artifactId>
+    <artifactId>publication-generator-database</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <properties>
@@ -36,7 +36,7 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>${liquibase.version}</version>
                 <configuration>
-                    <changeLogFile>publications.statistic.changelog-master.yaml</changeLogFile>
+                    <changeLogFile>publications.generator.changelog-master.yaml</changeLogFile>
                     <url>jdbc:postgresql://localhost:5432/publications</url>
                     <username>postgres</username>
                     <password>postgres</password>

@@ -2,6 +2,7 @@ package com.lurking.cobra.blog.generator.api.watcher.habr.repository
 
 import com.lurking.cobra.blog.generator.api.watcher.habr.HubType
 import com.lurking.cobra.blog.generator.api.publication.Publication
+import java.time.LocalDateTime
 
 interface HabrPublicationRepository {
 
@@ -11,7 +12,7 @@ interface HabrPublicationRepository {
      *
      * @param subscription название подписки
      */
-    fun getIndexBySubscriptionNameAndType(subscriptionName: String, subscriptionType: HubType) : Int
+    fun getLastPublicationTimestampBySubscriptionNameAndType(subscriptionName: String, subscriptionType: HubType) : LocalDateTime?
 
     /**
      * Сохранить публикацию в логе, только закомиченные публикацию считаются исполненными

@@ -5,7 +5,7 @@ import com.lurking.cobra.blog.generator.api.publication.Publication
 
 class HabrPublicationIterator(
     private val subscriptions: List<HubSubscription>,
-    private val block: (Publication) -> PublicationProducer
+    private val block: (() -> Publication) -> PublicationProducer
 ) : Iterator<PublicationProducer> {
 
     private var pointer: Int = 0
@@ -13,13 +13,18 @@ class HabrPublicationIterator(
     override fun hasNext(): Boolean {
         var hasNext = false
 
-        while (pointer < subscriptions.size && !subscriptions[pointer].hasNext())
-            pointer += 1; hasNext = true // todo глянуть во что компилируется
+        while (pointer < subscriptions.size) {
+            if(subscriptions[pointer].hasNext()) {
+                hasNext = true; break
+            } else
+                pointer += 1;
+        }
 
         return hasNext
     }
 
     override fun next(): PublicationProducer {
-        return block(subscriptions[pointer].next())
+        val it: Int = pointer
+        return block { subscriptions[it].next() }
     }
 }

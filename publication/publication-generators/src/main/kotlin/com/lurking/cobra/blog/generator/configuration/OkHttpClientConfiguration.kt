@@ -1,7 +1,5 @@
-package com.lurking.cobra.blog.farm.configuration
+package com.lurking.cobra.blog.generator.configuration
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect
-import com.fasterxml.jackson.annotation.PropertyAccessor
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -12,10 +10,8 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import java.text.SimpleDateFormat
 
 @Configuration
 class OkHttpClientConfiguration {
@@ -27,8 +23,16 @@ class OkHttpClientConfiguration {
             .build()
     }
 
+    companion object {
+        private fun loggingInterceptor(): Interceptor {
+            val interceptor = HttpLoggingInterceptor()
+            interceptor.level = HttpLoggingInterceptor.Level.NONE
+            return interceptor
+        }
+    }
+
     @Bean
-    fun publicationStatisticObjectMapper(): ObjectMapper {
+    fun publicationGeneratorsObjectMapper(): ObjectMapper {
         return ObjectMapper()
             .enable(
                 DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
@@ -50,13 +54,5 @@ class OkHttpClientConfiguration {
                 SerializationFeature.FAIL_ON_EMPTY_BEANS,
             )
             .registerModules(KotlinModule.Builder().build(), JavaTimeModule(), Jdk8Module())
-    }
-
-    companion object {
-        private fun loggingInterceptor(): Interceptor {
-            val interceptor = HttpLoggingInterceptor()
-            interceptor.setLevel(HttpLoggingInterceptor.Level.NONE)
-            return interceptor
-        }
     }
 }
