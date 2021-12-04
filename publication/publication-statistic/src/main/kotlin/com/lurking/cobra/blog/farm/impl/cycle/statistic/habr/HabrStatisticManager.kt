@@ -41,7 +41,7 @@ class  HabrStatisticManager(
     }
 
     private fun applyTags(publication: Publication, article: Article) {
-        publication.tags = article.tags.map { it.value }.toSet()
+        publication.tags = article.tags.map { it.value.lowercase() }.toSet()
     }
 
     private fun analyzePublication(article: Article, publication: Publication) {

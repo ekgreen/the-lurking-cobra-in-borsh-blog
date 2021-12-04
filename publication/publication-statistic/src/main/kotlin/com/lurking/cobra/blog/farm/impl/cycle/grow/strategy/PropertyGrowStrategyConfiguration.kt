@@ -1,5 +1,6 @@
 package com.lurking.cobra.blog.farm.impl.cycle.grow.strategy
 
+import com.lurking.cobra.blog.farm.api.publication.model.PublicationStrategy
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding
 import org.springframework.context.annotation.Configuration

@@ -33,18 +33,13 @@ import com.lurking.cobra.blog.farm.impl.cycle.selection.filter.threshold.Thresho
 import com.lurking.cobra.blog.farm.impl.cycle.selection.filter.voter.AnyTagVoter
 import com.lurking.cobra.blog.farm.impl.cycle.selection.filter.voter.AtLeastOneVoterStrategy
 import com.lurking.cobra.blog.farm.impl.cycle.selection.filter.voter.PropertyVoterConfiguration
-import com.lurking.cobra.blog.farm.impl.handler.publisher.LoggerPublicationPublisher
 import com.lurking.cobra.blog.farm.impl.handler.publisher.ApiPublicationPublisher
 import com.lurking.cobra.blog.farm.impl.handler.rating.ArithmeticMeanStrategy
 import com.lurking.cobra.blog.farm.impl.reciever.EvenlyPublicationLifecycleScheduler
 import com.lurking.cobra.blog.farm.impl.reciever.PropertyPublicationLifecycleSchedulerConfiguration
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
-import java.time.Duration
-import java.time.temporal.ChronoUnit
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 
@@ -54,13 +49,6 @@ class StatisticServiceConfiguration {
     // publication
 
     @Bean
-    @Profile(DEV_PROFILE)
-    fun loggerPublicationPublisher(): PublicationPublisher {
-        return LoggerPublicationPublisher()
-    }
-
-    @Bean
-    @Profile(PROD_PROFILE)
     fun servicePublicationPublisher(api: PublicationApi): PublicationPublisher {
         return ApiPublicationPublisher(api)
     }
@@ -112,26 +100,20 @@ class StatisticServiceConfiguration {
     // grow
 
     @Bean
-    fun ratingScheduledGrowService(growStrategy: GrowStrategy<RatingBasedSchedulingTask, Double>, repository: RatingBasedSchedulingTaskRepository): GrowService {
+    fun ratingScheduledGrowService(growStrategy: GrowStrategy<RatingBasedSchedulingTask, Double>, repository: RatingBasedSchedulingTaskRepository<RatingBasedSchedulingTask>): GrowService {
         return RatingScheduledGrowService(growStrategy, repository)
     }
 
     @Bean
-//    @ConditionalOnProperty("publication.grow.strategy.machine")
     fun stateMachineGrowRateStrategy(
         configuration: PropertyGrowStrategyConfiguration
     ) : GrowStrategy<RatingBasedSchedulingTask, Double> {
-        return StateMachineGrowRateStrategy(arrayOf( // todo configuration based
-            RateState(50, Duration.of(1, ChronoUnit.MINUTES)),
-            RateState(20, Duration.of(5, ChronoUnit.MINUTES)),
-            RateState(10, Duration.of(10, ChronoUnit.MINUTES)),
-            RateState(0, Duration.of(60, ChronoUnit.MINUTES)),
-        ))
+        return StateMachineGrowRateStrategy( configuration.states.map { RateState(it.bound,it.getDuration()) })
     }
 
     @Bean
     fun evenlyPublicationLifecycleScheduler(
-        repositories: SchedulingTaskRepository<out SchedulingTask>,
+        repositories: SchedulingTaskRepository<SchedulingTask>,
         scheduler: ScheduledExecutorService,
         configuration: PublicationLifecycleSchedulerConfiguration,
         publicationHandler: PublicationHandler

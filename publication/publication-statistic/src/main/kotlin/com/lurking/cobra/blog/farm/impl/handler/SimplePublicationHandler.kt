@@ -8,6 +8,7 @@ import com.lurking.cobra.blog.farm.api.publication.model.Publication
 import com.lurking.cobra.blog.farm.api.publication.publisher.PublicationPublisher
 import com.lurking.cobra.blog.farm.impl.exception.PublicationCycleRuntimeException
 import com.lurking.cobra.blog.farm.impl.exception.VALIDATION_EXCEPTION
+import mu.KLogging
 import org.springframework.stereotype.Service
 
 @Service
@@ -22,6 +23,8 @@ class SimplePublicationHandler(
      * TODO failover strategy - продумать стратегию поведения системы при ошибках: какие могут быть, как обрабатывать
      */
     override fun handlePublication(request: PublicationDto) {
+        logger.info { "Handler [log, urn = ${request.urn}, uri = ${request.uri} ] $request" }
+
         // 1. Валидация запроса на публикацию
         validateRequest(request)
 
@@ -41,7 +44,7 @@ class SimplePublicationHandler(
     }
 
     private fun validateRequest(request: PublicationDto) {
-        if ((request.id == null && (request.uri == null || request.urn == null)) || request.id != null)
+        if (request.id == null && (request.uri == null || request.urn == null))
             throw PublicationCycleRuntimeException(VALIDATION_EXCEPTION, "invalid statistic publication request")
     }
 
@@ -54,4 +57,6 @@ class SimplePublicationHandler(
     private fun createPublication(request: PublicationDto): Publication {
         return Publication(uri = request.uri!!, urn = request.urn!!)
     }
+
+    companion object: KLogging()
 }

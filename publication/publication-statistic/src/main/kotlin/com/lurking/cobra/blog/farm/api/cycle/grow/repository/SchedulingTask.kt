@@ -6,4 +6,5 @@ interface SchedulingTask {
     fun id(): Long?
     fun publicationId(): String
     fun launchTimestamp(): LocalDateTime
+    fun changeTaskStatus(status: TaskStatus)
 }

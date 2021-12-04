@@ -9,6 +9,7 @@ import com.lurking.cobra.blog.farm.api.publication.model.Publication
 import com.lurking.cobra.blog.farm.api.publication.model.PublicationStrategy
 import com.lurking.cobra.blog.farm.impl.exception.ILLEGAL_EXCEPTION
 import com.lurking.cobra.blog.farm.impl.exception.PublicationCycleRuntimeException
+import mu.KLogging
 import org.springframework.stereotype.Service
 
 @Service
@@ -35,6 +36,7 @@ class PublicationStatisticCycleImpl(
      *
      */
     override fun doPublicationCycle(publication: Publication, publisher: (Publication, PublicationStrategy) -> Unit) {
+        logger.info { "Handler [log, urn = ${publication.urn}, uri = ${publication.uri} ] $publication" }
         // Шаги жизненного цикла
         lifecycle(publication, publisher)
     }
@@ -52,4 +54,6 @@ class PublicationStatisticCycleImpl(
         // 4. отправляем публикацию
         grow.attachPublication(publication, strategy)
     }
+
+    companion object: KLogging()
 }

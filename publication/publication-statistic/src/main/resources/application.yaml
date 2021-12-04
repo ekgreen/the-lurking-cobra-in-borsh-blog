@@ -13,13 +13,13 @@ publication:
       machine:
         states:
           - bound: 50
-            duration: "1m"
+            duration: "10s"
           - bound: 30
-            duration: "5m"
+            duration: "30s"
           - bound: 10
-            duration: "10m"
+            duration: "40s"
           - bound: 0
-            duration: "1h"
+            duration: "60s"
     scheduler:
       delay: 3600
       threads: 5

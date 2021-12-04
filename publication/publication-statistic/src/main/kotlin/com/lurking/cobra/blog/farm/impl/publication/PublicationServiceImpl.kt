@@ -1,6 +1,7 @@
 package com.lurking.cobra.blog.farm.impl.publication
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.lurking.cobra.blog.farm.PublicationStatisticApplication.Companion.PROD_PROFILE
 import com.lurking.cobra.blog.farm.api.publication.model.PublicationDto
 import com.lurking.cobra.blog.farm.api.publication.model.Publication
 import com.lurking.cobra.blog.farm.api.publication.PublicationApi
@@ -13,9 +14,11 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
 
 @Service
+@Profile(PROD_PROFILE)
 class PublicationServiceImpl(
     private val client: OkHttpClient,
     private val objectMapper: ObjectMapper,

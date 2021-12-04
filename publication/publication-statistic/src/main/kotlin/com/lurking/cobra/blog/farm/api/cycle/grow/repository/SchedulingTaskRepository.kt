@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 @NoRepositoryBean
 interface SchedulingTaskRepository<T : SchedulingTask> : JpaRepository<T, Long> {
 
-    fun findByPublicationId(publicationId : String): T?
+    fun findByPublicationIdAndStatus(publicationId: String, status: TaskStatus = TaskStatus.LAUNCHED): T?
 
-    fun findByLaunchTimestampBetween(leftBound: LocalDateTime, rightBound: LocalDateTime): List<T>
+    fun findByLaunchTimestampBeforeAndStatus(before: LocalDateTime, status: TaskStatus = TaskStatus.WAITING): List<T>
 }

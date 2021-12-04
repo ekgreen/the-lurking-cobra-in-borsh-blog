@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit
  * s1 <-> s2 <-> ... <-> sN
  */
 class StateMachineGrowRateStrategy(
-    private val states: Array<RateState>,
+    private val states: List<RateState>,
     private val selector: StateSelector = ApproximateStateSelector()
 ) : GrowStrategy<RatingBasedSchedulingTask, Double> {
 
@@ -50,9 +50,9 @@ class StateMachineGrowRateStrategy(
 
     private fun initStateMachine(newValue: Double, strategy: PublicationStrategy): RateState {
         return states[when (strategy) {
-            PublicationStrategy.PUBLISHING  -> selector.selectStateByMillis(TimeUnit.HOURS.toMillis(6), states)
-            PublicationStrategy.GROW        -> selector.selectStateByMillis(TimeUnit.DAYS.toMillis(1), states)
-            PublicationStrategy.FREEZE      -> selector.selectStateByMillis(TimeUnit.DAYS.toMillis(30), states)
+            PublicationStrategy.PUBLISHING  -> selector.selectStateByMillis(TimeUnit.MINUTES.toMillis(1), states)
+            PublicationStrategy.GROW        -> selector.selectStateByMillis(TimeUnit.MINUTES.toMillis(6), states)
+            PublicationStrategy.FREEZE      -> selector.selectStateByMillis(TimeUnit.MINUTES.toMillis(10), states)
         }]
     }
 

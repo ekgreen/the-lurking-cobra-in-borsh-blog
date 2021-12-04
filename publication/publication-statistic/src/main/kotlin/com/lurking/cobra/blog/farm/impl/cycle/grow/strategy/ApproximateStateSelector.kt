@@ -6,7 +6,7 @@ import kotlin.math.abs
 
 class ApproximateStateSelector : StateSelector {
 
-    override fun selectStateByMillis(time: Long, states: Array<RateState>): Int {
+    override fun selectStateByMillis(time: Long, states: List<RateState>): Int {
         return states.withIndex().minByOrNull { abs(time - it.value.duration.toMillis()) }!!.index
     }
 }

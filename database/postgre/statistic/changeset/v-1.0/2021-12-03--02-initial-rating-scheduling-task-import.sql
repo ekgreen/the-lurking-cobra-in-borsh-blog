@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS statistic.rating_scheduling_task
     publication_id      varchar(36) unique,
     launch_timestamp    timestamp   not null,
     grow_time           bigint      not null,
-    grow_rate           decimal     not null
+    grow_rate           decimal     not null,
+    status              varchar(10) not null
 )
 
 --rollback DROP TABLE IF EXISTS statistic.rating_scheduling_task

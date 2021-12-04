@@ -23,6 +23,10 @@ open class RatingBasedSchedulingTask (
 
     @Column(name = "grow_rate", nullable = false)
     open var growRate: Double,
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    open var status: TaskStatus = TaskStatus.WAITING
 ): SchedulingTask {
     override fun id(): Long? {
         return id
@@ -36,6 +40,10 @@ open class RatingBasedSchedulingTask (
         return launchTimestamp
     }
 
+    override fun changeTaskStatus(status: TaskStatus) {
+        this.status = status
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other == null || Hibernate.getClass(this) != Hibernate.getClass(other)) return false
@@ -46,7 +54,8 @@ open class RatingBasedSchedulingTask (
 
     override fun hashCode(): Int = javaClass.hashCode()
 
+    @Override
     override fun toString(): String {
-        return "RatingBasedSchedulingTask(id=$id, publicationId='$publicationId', launchTimestamp=$launchTimestamp, growTime=$growTime, growRate=$growRate)"
+        return this::class.simpleName + "(id = $id , publicationId = $publicationId , launchTimestamp = $launchTimestamp , growTime = $growTime , growRate = $growRate , status = $status )"
     }
 }
