@@ -11,7 +11,7 @@
 
     <modules>
         <module>publication-generators</module>
-        <module>publication-lifecycle</module>
+        <module>publication-statistic</module>
         <module>publication-service</module>
     </modules>
 
