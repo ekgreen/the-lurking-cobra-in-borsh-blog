@@ -2,19 +2,25 @@ package com.lurking.cobra.blog.publication.service.impl.listener
 
 import com.lurking.cobra.blog.publication.service.api.listener.PublicationReactionListener
 import com.lurking.cobra.blog.publication.service.api.model.dto.ReactionEvent
-import org.springframework.amqp.rabbit.annotation.EnableRabbit
+import com.lurking.cobra.blog.publication.service.api.orchestration.ServicePublicationOrchestration
+import com.lurking.cobra.blog.publication.service.impl.configuration.AmqpConfiguration.Companion.REACTION_QUEUE
 import org.springframework.amqp.rabbit.annotation.RabbitListener
-import org.springframework.stereotype.Component
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
 import java.util.logging.Logger
 
-@Component
-class PublicationReactionListenerImpl : PublicationReactionListener {
+/**
+ * Сервис, реализующий listener для очереди полученных реакций на статью
+ */
+@Service
+class PublicationReactionListenerImpl @Autowired constructor(
+    val orchestration: ServicePublicationOrchestration) : PublicationReactionListener {
     var logger: Logger = Logger.getLogger(PublicationReactionListenerImpl::class.java.toString())
 
-    // Enum
-    @RabbitListener(queues = ["reaction-queue"])
+    @RabbitListener(queues = [REACTION_QUEUE])
     override fun processReactionQueue(event: ReactionEvent) {
-        logger.info("Received message from reaction queue: $event");
+        logger.info("Received event from reaction queue: $event")
+        orchestration.reactionEvent(event)
     }
 }
 
