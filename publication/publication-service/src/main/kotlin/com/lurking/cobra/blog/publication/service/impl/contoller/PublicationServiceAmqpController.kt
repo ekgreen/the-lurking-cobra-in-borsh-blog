@@ -20,7 +20,7 @@ class PublicationServiceAmqpController {
     @RequestMapping("/publication-queue")
     @ResponseBody
     fun publicationQueue(): String {
-        val request = PublicationEvent("61aa5ff1845a9f3b6489c0b2", 1)
+        val request = PublicationEvent("61a8e99117cb4739ef830834", 1)
         template!!.convertAndSend(PUBLICATION_QUEUE, request) { message ->
             message.messageProperties.contentType     = MessageProperties.CONTENT_TYPE_JSON
             message.messageProperties.contentEncoding = "UTF-8"
@@ -33,7 +33,7 @@ class PublicationServiceAmqpController {
     @RequestMapping("/reaction-queue")
     @ResponseBody
     fun reactionQueue(): String {
-        val request = ReactionEvent("61aa5ff1845a9f3b6489c0b2", "like", 1)
+        val request = ReactionEvent("61a8e99117cb4739ef830834", "like", 1)
         template!!.convertAndSend(REACTION_QUEUE, request)
         return "request send to reaction queue"
     }
