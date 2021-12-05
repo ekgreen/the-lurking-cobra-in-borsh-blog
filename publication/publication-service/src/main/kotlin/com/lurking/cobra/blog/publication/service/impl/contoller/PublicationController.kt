@@ -41,7 +41,7 @@ class PublicationController(
     /** Метод для получения наиболее актуальных статей */
     @PostMapping("/query")
     fun getPublicationsByQuery(@RequestBody request: PublicationQueryRequest): List<PublicationDto> {
-        return orchestration.findPublicationsByTags(request.tags!!).map { converter.convertModelToDto(it) }
+        return orchestration.findPublicationsByTags(request.tags!!, request.count).map { converter.convertModelToDto(it) }
     }
 
     /** Метод для поиска статьи по её id */
