@@ -52,7 +52,10 @@ class ServicePublicationOrchestrationImpl(
         logger.info("пришел объект $event")
 
         val publicationEntity = publicationRepository.findById(event.publicationId).orElseThrow()
-        publicationEntity.publicationsCount++
+
+        publicationEntity.publicationsCount     += 1
+        publicationEntity.lastPublicationDate   = Date()
+
         publicationRepository.save(publicationEntity)
     }
 

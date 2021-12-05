@@ -2,11 +2,14 @@ blog:
   generator:
     habr:
       subscriptions:
-        - name: skyeng
-          type: COMPANY
-        - name: vk
-          type: COMPANY
-
+        - name: tagir_valeev
+          type: AUTHOR
+#        - name: vk
+#          type: COMPANY
+#        - name: jugru
+#          type: COMPANY
+#        - name: JetBrains
+#          type: COMPANY
 
 spring:
   jpa:

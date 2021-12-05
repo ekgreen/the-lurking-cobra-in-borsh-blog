@@ -14,8 +14,11 @@ class  HabrStatisticManager(
 ) : PublicationStatisticManager {
 
     override fun enrich(publication: Publication) {
+        // 0. Extract articleId: https://habr.com/ru/post/586994/
+        val articleId = publication.uri.trim('/').substring(25)
+
         // 1. Загрузить статистику по статье
-        val article: Article = visitor.publicationStatistic(publication.uri)
+        val article: Article = visitor.publicationStatistic(articleId)
 
         // 2. Обогатим публикацию обновленной статистикой данными
         applyStatistic(publication, article)

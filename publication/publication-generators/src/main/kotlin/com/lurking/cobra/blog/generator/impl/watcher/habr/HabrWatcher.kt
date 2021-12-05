@@ -43,7 +43,7 @@ class HabrWatcher(
         // 1. Найти visitor, который обрабатывает hub
         val visitor: HabrVisitor = visitors.find { visitor -> visitor.isSupported(hub) }!!
         // реализовать механизм определения хвоста подписки по умолчанию
-        val timeStrategy: TailVisitorRule = DayLimitTailVisitorRule(120)
+        val timeStrategy: TailVisitorRule = DayLimitTailVisitorRule(360)
         // 2. Получить последний вычитанный индекс статьи, мы знаем, что в блогах и прочих сущностях
         // все записи упорядочены по возрастанию
         // он должен полагаться на максимальный (последний) вычитанный индекс

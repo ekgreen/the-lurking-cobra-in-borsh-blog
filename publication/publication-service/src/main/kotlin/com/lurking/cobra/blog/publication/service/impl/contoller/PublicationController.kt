@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
  * Использует внедрение сервиса-валидации получаемых PublicationDto - сущностей.
  */
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/publication")
 class PublicationController(
     val orchestration: ServicePublicationOrchestration,
     val validator: PublicationValidatorService,

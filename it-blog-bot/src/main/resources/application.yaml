@@ -2,7 +2,21 @@ telegram:
   bots: # all registered bots
     - name: ItBlog # search in context by bot name (may be equal with !bean! name)
       token: ${it.blog.token.value} # registry have to produce methods aimed read placeholders from environment
+      grabber:
+        allowed_updates: [ MESSAGE, CALLBACK_QUERY, EDITED_CHANNEL_POST, CHANNEL_POST ]
 
+ItBlog:
+  channel: ${it.blog.channel}
+
+publication:
+  service:
+    url: http://localhost:8090
+
+logging:
+  level:
+    com:
+      github:
+        ekgreen: DEBUG
 spring:
   logging:
     hostDir: ${it.blog.bot.logs.host.dir}
