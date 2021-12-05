@@ -33,6 +33,9 @@ data class Publication(
     // реакция на ресурс после публикации
     var reactions: PublicationReactions? = null,
 
+    // рейтинг реакций на ресурс (публикации)
+    var reactionRating: Double? = null,
+
     // кол-во публикаций
     var publicationsCount: Long? = null,
 

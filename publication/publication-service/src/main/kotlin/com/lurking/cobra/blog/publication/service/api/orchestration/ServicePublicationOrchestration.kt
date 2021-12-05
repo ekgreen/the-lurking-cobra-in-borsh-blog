@@ -24,7 +24,5 @@ interface ServicePublicationOrchestration {
 
     fun reactionEvent(event: ReactionEvent)
 
-    fun findPublicationsByTags(tags: Set<String>): List<Publication>
-
-    fun findMostPopularPublications(from: LocalDateTime, to: LocalDateTime): List<Publication>
+    fun findPublicationsByTags(tags: Set<String>, count: Int): List<Publication>
 }
