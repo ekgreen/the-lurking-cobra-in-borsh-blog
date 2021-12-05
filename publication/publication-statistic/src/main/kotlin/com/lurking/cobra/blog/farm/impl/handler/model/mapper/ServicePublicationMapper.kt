@@ -20,6 +20,7 @@ class ServicePublicationMapper : PublicationMapper {
             strategy            = entry.strategy,
             statistic           = entry.statistic,
             reactions           = entry.reactions,
+            reactionRating      = entry.reactionRating,
             publicationsCount   = entry.publicationsCount,
             lastPublicationDate = entry.lastPublicationDate,
         )
@@ -37,6 +38,7 @@ class ServicePublicationMapper : PublicationMapper {
             strategy            = model.strategy,
             statistic           = model.statistic,
             reactions           = model.reactions,
+            reactionRating      = model.reactionRating,
             publicationsCount   = model.publicationsCount,
             lastPublicationDate = model.lastPublicationDate,
         )
