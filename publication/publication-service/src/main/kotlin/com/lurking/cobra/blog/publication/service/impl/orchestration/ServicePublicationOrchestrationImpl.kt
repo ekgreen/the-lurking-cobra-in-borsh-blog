@@ -153,23 +153,10 @@ class ServicePublicationOrchestrationImpl(
              ])
          */
 
-        //val addFieldsStage = Aggregation.addFields().addField("sort_order").withValueOf().build()
-
-//        val agg = newAggregation(
-//            match(Criteria.where("last_publication").exists(true)),      // проверяем, что запись публиковалась
-//            match(Criteria.where("last_publication").gte(to).lt(from)),       // проверяем, что дата попадает в наш промежуток
-//
-//            group("_id").sum(AggregationExpression.from(MongoExpression.create("\$add: [\"\$reactions.like\", \"\$reactions.zipper\", \"\$reactions.poker_face\"]"))).`as`("sort_order"),  // тут надо добавить поле со значением - сумма трех реакций
-//            sort(Sort.Direction.DESC, "sort_order"),                        // сортируем по нашему новому полю
-//            project("sort_order")                                           // убираем новое поле из выборки
-//        )
-
         val agg = newAggregation(
             match(Criteria.where("last_publication").exists(true)),      // проверяем, что запись публиковалась
             match(Criteria.where("last_publication").gte(to).lt(from)),
-            group("rating").sum("\$reaction.like").`as`("sort_order"),
-            sort(Sort.Direction.DESC, "sort_order"),
-            project("sort_order")
+            sort(Sort.Direction.DESC, "reaction_rating")
         )
 
         val publications = mongoTemplate.aggregate(agg, "publication", PublicationEntity::class.java)
