@@ -5,7 +5,7 @@
 CREATE TABLE IF NOT EXISTS statistic.rating_scheduling_task
 (
     id                  bigserial   constraint rating_scheduling_task_pk primary key,
-    publication_id      varchar(36) unique,
+    publication_id      varchar(36) not null,
     launch_timestamp    timestamp   not null,
     grow_time           bigint      not null,
     grow_rate           decimal     not null,

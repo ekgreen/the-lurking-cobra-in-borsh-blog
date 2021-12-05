@@ -1,5 +1,6 @@
 package com.lurking.cobra.blog.publication.service.impl.contoller
 
+import com.lurking.cobra.blog.publication.service.api.model.PublicationReactions
 import com.lurking.cobra.blog.publication.service.api.model.dto.PublicationDto
 import com.lurking.cobra.blog.publication.service.api.model.mapper.PublicationMapper
 import com.lurking.cobra.blog.publication.service.api.orchestration.ServicePublicationOrchestration
@@ -13,9 +14,11 @@ import org.springframework.web.bind.annotation.*
  */
 @RestController
 @RequestMapping("/api/v1")
-class PublicationController (val orchestration: ServicePublicationOrchestration,
-                                                   val validator: PublicationValidatorService,
-                                                   val converter: PublicationMapper) {
+class PublicationController(
+    val orchestration: ServicePublicationOrchestration,
+    val validator: PublicationValidatorService,
+    val converter: PublicationMapper
+) {
 
     /** Метод для получения наиболее актуальных статей */
     @GetMapping("/find/{count}")
@@ -37,15 +40,24 @@ class PublicationController (val orchestration: ServicePublicationOrchestration,
 
     /** Метод создания статьи */
     @PostMapping("/add")
-    fun createPublication(publicationDto: PublicationDto) {
+    fun createPublication(@RequestBody publicationDto: PublicationDto): PublicationDto {
         validator.validateCreatePublication(publicationDto)
-        converter.convertDtoToModel(publicationDto).let { orchestration.createPublication(it) }
+        return orchestration.savePublication(publicationDto.let { converter.convertDtoToModel(enrichRequestDto(it)) })
+            .let { converter.convertModelToDto(it)  }
     }
 
     /** Метод обновления данных о статье */
     @PostMapping("/edit/{id}")
-    fun updatePublication(publicationDto: PublicationDto) {
+    fun updatePublication(@RequestBody publicationDto: PublicationDto) : PublicationDto {
         validator.validateUpdatePublication(publicationDto)
-        converter.convertDtoToModel(publicationDto).let { orchestration.savePublication(it) }
+        return orchestration.savePublication(publicationDto.let { converter.convertDtoToModel(enrichRequestDto(it)) })
+            .let { converter.convertModelToDto(it)  }
+    }
+
+    private fun enrichRequestDto(publicationDto: PublicationDto): PublicationDto {
+        publicationDto.keywords = publicationDto.keywords?: mutableSetOf()
+        publicationDto.reactions = publicationDto.reactions?: PublicationReactions()
+        publicationDto.publicationsCount = publicationDto.publicationsCount?: 0
+        return publicationDto
     }
 }

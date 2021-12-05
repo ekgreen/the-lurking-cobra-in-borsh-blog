@@ -1,7 +1,5 @@
 package com.lurking.cobra.blog.farm.configuration
 
-import com.lurking.cobra.blog.farm.PublicationStatisticApplication.Companion.DEV_PROFILE
-import com.lurking.cobra.blog.farm.PublicationStatisticApplication.Companion.PROD_PROFILE
 import com.lurking.cobra.blog.farm.api.cycle.grow.GrowService
 import com.lurking.cobra.blog.farm.api.cycle.grow.config.GrowServiceConfiguration
 import com.lurking.cobra.blog.farm.api.cycle.grow.repository.RatingBasedSchedulingTask
@@ -39,7 +37,6 @@ import com.lurking.cobra.blog.farm.impl.reciever.EvenlyPublicationLifecycleSched
 import com.lurking.cobra.blog.farm.impl.reciever.PropertyPublicationLifecycleSchedulerConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Profile
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 

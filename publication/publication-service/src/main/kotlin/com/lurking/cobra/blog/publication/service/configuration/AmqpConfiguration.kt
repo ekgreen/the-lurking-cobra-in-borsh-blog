@@ -1,4 +1,4 @@
-package com.lurking.cobra.blog.publication.service.impl.configuration
+package com.lurking.cobra.blog.publication.service.configuration
 
 import org.springframework.amqp.core.Queue
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory

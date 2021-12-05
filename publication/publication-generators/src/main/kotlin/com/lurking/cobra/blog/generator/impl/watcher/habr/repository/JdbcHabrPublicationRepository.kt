@@ -18,20 +18,21 @@ import java.time.format.DateTimeFormatter
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.properties.Delegates
 
+
 open class JdbcHabrPublicationRepository(private val namedTemplate: NamedParameterJdbcTemplate, private val generatorLog: GeneratorLog) : HabrPublicationRepository {
+
+    private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
 
     private @Volatile var generatorId: Long? = null
     // todo переписать на loading cache с ttl (при ошибках будет забиваться память)
     private val commitMap: MutableMap<String, Long> = ConcurrentHashMap()
 
-    @EventListener(ContextRefreshedEvent::class)
-    fun onStartup() {
-
-    }
 
     private fun registryGenerator(): Long {
         val holder: KeyHolder = GeneratedKeyHolder()
-        namedTemplate.jdbcTemplate.update("insert into generator.generator_type (type) VALUES ('$SOURCE_NAME')", holder)
+        val parameters = MapSqlParameterSource()
+            .addValue("type", SOURCE_NAME)
+        namedTemplate.update("insert into generator.generator_type (type) VALUES (:type)", parameters, holder, arrayOf("id"))
         return holder.key?.toLong() ?: throw RuntimeException("failed registry habr generator type!")
     }
 
@@ -51,11 +52,11 @@ open class JdbcHabrPublicationRepository(private val namedTemplate: NamedParamet
 
         val parameters = MapSqlParameterSource()
             .addValue("name", subscriptionName)
-            .addValue("type", subscriptionType)
+            .addValue("type", subscriptionType.name)
 
-        val query: List<String> = namedTemplate.query(select, parameters) { rs, _ -> rs.getString(0) }
+        val query: List<String> = namedTemplate.query(select, parameters) { rs, _ -> rs.getString(1) }
 
-        return if(query.isEmpty()) null else LocalDateTime.parse(query[0], DateTimeFormatter.ISO_DATE_TIME)
+        return if(query.isEmpty()) null else LocalDateTime.parse(query[0], formatter)
     }
 
     @Transactional
@@ -75,11 +76,11 @@ open class JdbcHabrPublicationRepository(private val namedTemplate: NamedParamet
         if(this.generatorId == null) {
             synchronized(this) {
                 if (this.generatorId == null) {
-                    val id: Long? = namedTemplate.jdbcTemplate.queryForObject(
+                    val ids: List<Long> = namedTemplate.jdbcTemplate.query(
                         "select id from generator.generator_type where type = '$SOURCE_NAME'",
-                        Long::class.java
-                    )
-                    generatorId = id ?: registryGenerator()
+                    ) { rs, _ -> rs.getLong(1) }
+
+                    generatorId = if(ids.isEmpty()) registryGenerator() else ids[0]
                 }
             }
         }
@@ -95,11 +96,11 @@ open class JdbcHabrPublicationRepository(private val namedTemplate: NamedParamet
         """.trimIndent()
         val parameters = MapSqlParameterSource()
             .addValue("pageId", publication.uri)
-            .addValue("publicationTimestamp", publication.timestamp.format(DateTimeFormatter.ISO_DATE_TIME))
+            .addValue("publicationTimestamp", publication.timestamp)
             .addValue("name", publication.hub.name)
             .addValue("type", publication.hub.type.name)
 
-        namedTemplate.update(select, parameters, holder)
+        namedTemplate.update(select, parameters, holder, arrayOf("id"))
 
         return holder.key?.toLong() ?: throw RuntimeException("habr entity log insertion failed!")
     }

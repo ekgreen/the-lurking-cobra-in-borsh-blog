@@ -20,7 +20,8 @@ class PublicationGenerator(
      * Метод итерируется по всем доступным генераторам
      * и запускает их метод {@link Generator#getPublications(...)}
      */
-    @Scheduled(fixedDelay = 1000 * 10)
+//    @Scheduled(fixedDelay = 1000 * 30, initialDelay = 1000 * 30)
+    @Scheduled(fixedDelay = 1000 * 20)
     fun process() {
         // 1. Итерируемся по генераторам
         generators.forEach {

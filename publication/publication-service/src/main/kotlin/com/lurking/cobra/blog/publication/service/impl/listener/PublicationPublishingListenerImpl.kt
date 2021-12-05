@@ -3,8 +3,7 @@ package com.lurking.cobra.blog.publication.service.impl.listener
 import com.lurking.cobra.blog.publication.service.api.listener.PublicationPublishingListener
 import com.lurking.cobra.blog.publication.service.api.model.PublicationEvent
 import com.lurking.cobra.blog.publication.service.api.orchestration.ServicePublicationOrchestration
-import com.lurking.cobra.blog.publication.service.impl.configuration.AmqpConfiguration.Companion.PUBLICATION_QUEUE
-import com.lurking.cobra.blog.publication.service.impl.configuration.AmqpConfiguration.Companion.REACTION_QUEUE
+import com.lurking.cobra.blog.publication.service.configuration.AmqpConfiguration.Companion.PUBLICATION_QUEUE
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

@@ -4,10 +4,11 @@ spring:
       host: localhost
       port: 27017
       authentication-database: admin
-      username: admin
-      password: admin
-      database: test_db
+      username: root
+      password: example
+      database: it_blog
 
 server:
   servlet:
     context-path: /publication-service
+  port: 8090

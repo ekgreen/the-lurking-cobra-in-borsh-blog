@@ -13,6 +13,7 @@ class ApiPublicationPublisher(private var api: PublicationApi): PublicationPubli
     override fun publish(publication: Publication, strategy: PublicationStrategy) {
         logger.info { "Published [log, strategy = $strategy]: $publication" }
 
-        api.savePublication(publication)
+        val saved: Publication = api.savePublication(publication)
+        publication.id = saved.id
     }
 }

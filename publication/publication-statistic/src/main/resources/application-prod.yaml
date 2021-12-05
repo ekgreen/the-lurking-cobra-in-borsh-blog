@@ -24,24 +24,23 @@ publication:
       delay: 3600
       threads: 5
   service:
-    url: http://localhost:8080
+    url: http://localhost:8090
 
 server:
   servlet:
     context-path: /statistic
 
 spring:
-  h2:
-    console:
-      path: /h2-console
-      enabled: true
   jpa:
-    database: h2
     open-in-view: false
-    hibernate:
-      ddl-auto: create-drop
   datasource:
-    url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS statistic
-    name: db
-    username: sa
-    password: sa
+    hikari:
+      connection-timeout: 2000
+      maximum-pool-size: 5
+    url: jdbc:postgresql://localhost:5432/it_blog
+    username: postgres # понятно что креды не надо так писать
+    password: postgres # понятно что креды не надо так писать
+
+logging:
+  level:
+    okhttp3: DEBUG

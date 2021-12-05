@@ -2,8 +2,8 @@ package com.lurking.cobra.blog.publication.service.impl.contoller
 
 import com.lurking.cobra.blog.publication.service.api.model.PublicationEvent
 import com.lurking.cobra.blog.publication.service.api.model.dto.ReactionEvent
-import com.lurking.cobra.blog.publication.service.impl.configuration.AmqpConfiguration.Companion.PUBLICATION_QUEUE
-import com.lurking.cobra.blog.publication.service.impl.configuration.AmqpConfiguration.Companion.REACTION_QUEUE
+import com.lurking.cobra.blog.publication.service.configuration.AmqpConfiguration.Companion.PUBLICATION_QUEUE
+import com.lurking.cobra.blog.publication.service.configuration.AmqpConfiguration.Companion.REACTION_QUEUE
 import org.springframework.amqp.core.AmqpTemplate
 import org.springframework.amqp.core.MessageProperties
 import org.springframework.beans.factory.annotation.Autowired

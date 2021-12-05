@@ -37,7 +37,7 @@
                 <version>${liquibase.version}</version>
                 <configuration>
                     <changeLogFile>publications.generator.changelog-master.yaml</changeLogFile>
-                    <url>jdbc:postgresql://localhost:5432/publications</url>
+                    <url>jdbc:postgresql://localhost:5432/it_blog</url>
                     <username>postgres</username>
                     <password>postgres</password>
                 </configuration>

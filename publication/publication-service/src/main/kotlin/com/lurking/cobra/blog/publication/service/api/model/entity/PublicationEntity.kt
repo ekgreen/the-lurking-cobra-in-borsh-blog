@@ -1,5 +1,8 @@
 package com.lurking.cobra.blog.publication.service.api.model.entity
 
+import com.lurking.cobra.blog.publication.service.api.model.PublicationReactions
+import com.lurking.cobra.blog.publication.service.api.model.PublicationStatistic
+import com.lurking.cobra.blog.publication.service.api.model.PublicationStrategy
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
@@ -12,6 +15,9 @@ data class PublicationEntity(
     @Field("uri")
     var uri: String,
 
+    @Field("urn")
+    var urn: String,
+
     @Field("title")
     var title: String,
 
@@ -19,22 +25,25 @@ data class PublicationEntity(
     var rating: Double,
 
     @Field("tags")
-    var tags: MutableSet<String> = mutableSetOf(),
+    var tags: MutableSet<String>,
 
     @Field("key_words")
-    var key_words: MutableSet<String> = mutableSetOf(),
+    var keywords: MutableSet<String>,
+
+    @Field("strategy")
+    var strategy: PublicationStrategy,
+
+    @Field("statistic")
+    var statistic: PublicationStatistic,
 
     @Field("reactions")
-    var reactions: MutableMap<String, Int> = mutableMapOf("like" to 0, "comments" to 0, "zipper" to 0),
-
-    @Field("status")
-    var status: Int,
+    var reactions: PublicationReactions,
 
     @Field("last_publication")
-    var last_publication: Date? = null,
+    var lastPublicationDate: Date?,
 
     @Field("publication_count")
-    var publication_count: Int = 0
+    var publicationsCount: Long = 0
 ) {
 }
 

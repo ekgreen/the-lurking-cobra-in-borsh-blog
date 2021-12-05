@@ -1,20 +1,41 @@
 package com.lurking.cobra.blog.farm.api.publication.model
 
+import java.util.*
+
 data class Publication(
-    // уникальный идентификатор публикации в мастер-системе
+    // идентификатор публикации
     var id: String? = null,
-    // идентификатор источника ресурса (публикации)
-    val urn: String,
-    // идентификатор ресурса (публикации)
-    val uri: String,
+
+    // заголовок ресурса (публикации)
+    var title: String? = null,
+
+    // уникальный идентификатор публикации (ресурса)
+    var uri: String,
+
+    // источник публикации (запроса на публикацию)
+    var urn: String,
+
     // рейтинг ресурса (публикации)
     var rating: Double = 0.0,
-    // тэги проставленные автором ресурса (публикации)
+
+    // теги ресурса (публикации)
     var tags: Set<String>? = null,
-    // стратегия публикации ресурса (публикации)
+
+    // ключевые слова ресурса (публикации)
+    var keywords: Set<String>? = null,
+
+    // стратегия публикации ресурса
     var strategy: PublicationStrategy? = null,
-    // статистика из источника ресурса (публикации)
+
+    // статистика из источника ресурса публикации
     var statistic: PublicationStatistic? = null,
+
     // реакция на ресурс после публикации
-    var reactions: PublicationReactions? = null
+    var reactions: PublicationReactions? = null,
+
+    // кол-во публикаций
+    var publicationsCount: Long? = null,
+
+    // последняя дата публикации
+    var lastPublicationDate: Date? = null
 )

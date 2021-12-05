@@ -2,9 +2,9 @@ package com.lurking.cobra.blog.publication.service.impl.orchestration
 
 import com.lurking.cobra.blog.publication.service.api.model.Publication
 import com.lurking.cobra.blog.publication.service.api.model.PublicationEvent
+import com.lurking.cobra.blog.publication.service.api.model.PublicationStrategy
 import com.lurking.cobra.blog.publication.service.api.model.dto.ReactionEvent
 import com.lurking.cobra.blog.publication.service.api.model.entity.PublicationEntity
-import com.lurking.cobra.blog.publication.service.api.model.entity.Status
 import com.lurking.cobra.blog.publication.service.api.model.mapper.PublicationMapper
 import com.lurking.cobra.blog.publication.service.api.orchestration.ServicePublicationOrchestration
 import com.lurking.cobra.blog.publication.service.api.repository.PublicationRepository
@@ -45,27 +45,22 @@ class ServicePublicationOrchestrationImpl(
         val entity = converter.convertModelToEntity(model)
 
         // 2. Сохраняем в репозиторий
-        publicationRepository.save(entity)
-
-        return model
+        return publicationRepository.save(entity).let { converter.convertEntityToModel(it) }
     }
 
     override fun publicationEvent(event: PublicationEvent) {
         logger.info("пришел объект $event")
 
         val publicationEntity = publicationRepository.findById(event.publicationId).orElseThrow()
-        publicationEntity.publication_count++
+        publicationEntity.publicationsCount++
         publicationRepository.save(publicationEntity)
     }
 
     override fun reactionEvent(event: ReactionEvent) {
 
         val publicationEntity = publicationRepository.findById(event.publicationId).orElseThrow()
-        var count = publicationEntity.reactions[event.reaction]
 
-        if (count != null) {
-            publicationEntity.reactions[event.reaction] = ++count
-        }
+        publicationEntity.reactions.handleReaction(event.reaction, event.count)
 
         publicationRepository.save(publicationEntity)
     }
@@ -73,36 +68,33 @@ class ServicePublicationOrchestrationImpl(
     override fun findMostActualPublications(count: Int): List<Publication> {
         // 1. не публиковавшиеся статьи этого месяца [топ приоритет]
 
-        var c1: Criteria = Criteria.where("status").`is`(Status.PUBLICATION_READY.ordinal)
-        var c2: Criteria = Criteria.where("last_publication").exists(false)
-        var resultCriteria: Criteria = Criteria().andOperator(c1, c2)
+        var statusCriteria: Criteria = Criteria.where("strategy").`is`(PublicationStrategy.PUBLISHING)
+        var existsCriteria: Criteria = Criteria.where("last_publication").exists(false)
 
-        val query1: Query = Query(resultCriteria)
+        var resultCriteria: Criteria = Criteria().andOperator(statusCriteria, existsCriteria)
+
+        val firstBatch: Query = Query(resultCriteria)
             .with(Sort.by(Sort.Direction.DESC, "rating")).limit(count)
 
-        val publications = mongoTemplate.find(query1, PublicationEntity::class.java, "publication")
+        val publications = mongoTemplate.find(firstBatch, PublicationEntity::class.java, "publication")
 
         if (publications.size < count) {
 
-            var residue = count - publications.size
+            val residue = count - publications.size
 
             val dateFrom = getDaysAgo(180)
             val dateTo = getDaysAgo(30)
 
-            c1 = Criteria.where("status").`is`(Status.PUBLICATION_READY.ordinal)
-            c2 = Criteria.where("last_publication").gte(dateFrom).lt(dateTo)
-            resultCriteria = Criteria().andOperator(c1, c2)
+            statusCriteria = Criteria.where("strategy").`is`(PublicationStrategy.PUBLISHING)
+            existsCriteria = Criteria.where("last_publication").gte(dateFrom).lt(dateTo)
+            resultCriteria = Criteria().andOperator(statusCriteria, existsCriteria)
 
-            val query2: Query = Query(resultCriteria)
+            val secondBatch: Query = Query(resultCriteria)
                 .with(Sort.by(Sort.Direction.DESC, "rating")).limit(residue)
 
-            publications.addAll(mongoTemplate.find(query2, PublicationEntity::class.java, "publication"))
+            publications.addAll(mongoTemplate.find(secondBatch, PublicationEntity::class.java, "publication"))
 
-
-            if (publications.size < count) {
-                // 3. [todo делаем позже] от 1 до 5 лет
-                TODO()
-            }
+            // 3. [todo делаем позже] от 1 до 5 лет
         }
 
         return publications.map { converter.convertEntityToModel(it) }

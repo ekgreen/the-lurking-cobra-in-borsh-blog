@@ -8,7 +8,7 @@ import javax.persistence.*
 @Table(name = "rating_scheduling_task", schema = "statistic")
 open class RatingBasedSchedulingTask (
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     open var id: Long? = null,
 

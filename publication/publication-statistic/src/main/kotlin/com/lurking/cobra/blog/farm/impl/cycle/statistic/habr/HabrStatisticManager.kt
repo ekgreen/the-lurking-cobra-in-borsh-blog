@@ -23,7 +23,10 @@ class  HabrStatisticManager(
         // 3. Обогатим публикацию обновленной статистикой по тегам
         applyTags(publication, article)
 
-        // 4. Если публикация "новая", то запустить дополнительные анализаторы обработчики
+        // 4. Обогатим публикацию заголовком
+        applyTitle(publication, article)
+
+        // 5. Если публикация "новая", то запустить дополнительные анализаторы обработчики
         if(publication.id == null)
             analyzePublication(article, publication)
     }
@@ -43,6 +46,12 @@ class  HabrStatisticManager(
     private fun applyTags(publication: Publication, article: Article) {
         publication.tags = article.tags.map { it.value.lowercase() }.toSet()
     }
+
+
+    private fun applyTitle(publication: Publication, article: Article) {
+        publication.title = article.title
+    }
+
 
     private fun analyzePublication(article: Article, publication: Publication) {
         // 1. Загрузить текст статьи

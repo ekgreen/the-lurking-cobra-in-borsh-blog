@@ -1,20 +1,42 @@
 package com.lurking.cobra.blog.publication.service.api.model
 
-import com.lurking.cobra.blog.publication.service.api.model.entity.Status
 import java.util.*
 
 
-class Publication(
+data class Publication(
+    // идентификатор публикации
     var id: String? = null,
-    var uri: String,
-    var title: String,
-    var rating: Double,
-    var tags: MutableSet<String> = mutableSetOf(),
-    var key_words: MutableSet<String> = mutableSetOf(),
-    var reactions: MutableMap<String, Int> = mutableMapOf(),
-    var status: Int,
-    var last_publication: Date? = null,
-    var publication_count: Int
-) {
 
-}
+    // заголовок ресурса (публикации)
+    var title: String,
+
+    // уникальный идентификатор публикации (ресурса)
+    var uri: String? = null,
+
+    // источник публикации (запроса на публикацию)
+    var urn: String? = null,
+
+    // рейтинг ресурса (публикации)
+    var rating: Double = 0.0,
+
+    // теги ресурса (публикации)
+    var tags: Set<String>? = mutableSetOf(),
+
+    // ключевые слова ресурса (публикации)
+    var keywords: Set<String>? = mutableSetOf(),
+
+    // стратегия публикации ресурса
+    var strategy: PublicationStrategy? = PublicationStrategy.FREEZE,
+
+    // статистика из источника ресурса публикации
+    var statistic: PublicationStatistic? = PublicationStatistic(),
+
+    // реакция на ресурс после публикации
+    var reactions: PublicationReactions? = PublicationReactions(),
+
+    // кол-во публикаций
+    var publicationsCount: Long? = 0,
+
+    // последняя дата публикации
+    var lastPublicationDate: Date? = null
+)

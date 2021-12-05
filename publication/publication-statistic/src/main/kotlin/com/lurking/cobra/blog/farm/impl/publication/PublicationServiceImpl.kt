@@ -51,7 +51,7 @@ class PublicationServiceImpl(
     private fun postPublication(path: String, publication: Publication): Publication {
         return client.newCall(Request.Builder()
             .url(serviceUrl + path)
-            .post(RequestBody.create(JSON_TYPE, objectMapper.writeValueAsString(publication)))
+            .post(RequestBody.create(JSON_TYPE, objectMapper.writeValueAsString(entryMapper.convertModelToEntry(publication))))
             .build()).execute()
             .use { it.body()?.string().let { objectMapper.readValue(it, PublicationDto::class.java) } }
             .let { entryMapper.convertEntryToModel(it) }

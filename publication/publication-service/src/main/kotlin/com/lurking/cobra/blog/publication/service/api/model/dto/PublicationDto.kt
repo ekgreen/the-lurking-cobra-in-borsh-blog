@@ -1,17 +1,47 @@
 package com.lurking.cobra.blog.publication.service.api.model.dto
 
-import com.lurking.cobra.blog.publication.service.api.model.entity.Status
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonInclude
+import com.lurking.cobra.blog.publication.service.api.model.PublicationReactions
+import com.lurking.cobra.blog.publication.service.api.model.PublicationStatistic
+import com.lurking.cobra.blog.publication.service.api.model.PublicationStrategy
 import java.util.*
 
-data class PublicationDto(
+@JsonInclude(JsonInclude.Include.NON_NULL)
+data class PublicationDto @JsonCreator constructor(
+    // идентификатор публикации
     var id: String? = null,
-    var uri: String,
-    var title: String,
-    var rating: Double,
-    var tags: MutableSet<String> = mutableSetOf(),
-    var key_words: MutableSet<String> = mutableSetOf(),
-    var reactions: MutableMap<String, Int> = mutableMapOf(),
-    var status: Int,
-    var last_publication: Date? = null,
-    var publication_count: Int
+
+    // заголовок ресурса (публикации)
+    var title: String? = null,
+
+    // уникальный идентификатор публикации (ресурса)
+    var uri: String? = null,
+
+    // источник публикации (запроса на публикацию)
+    var urn: String? = null,
+
+    // рейтинг ресурса (публикации)
+    var rating: Double = 0.0,
+
+    // теги ресурса (публикации)
+    var tags: Set<String>? = mutableSetOf(),
+
+    // ключевые слова ресурса (публикации)
+    var keywords: Set<String>? = mutableSetOf(),
+
+    // стратегия публикации ресурса
+    var strategy: PublicationStrategy? = null,
+
+    // статистика из источника ресурса публикации
+    var statistic: PublicationStatistic? = PublicationStatistic(),
+
+    // реакция на ресурс после публикации
+    var reactions: PublicationReactions? = PublicationReactions(),
+
+    // кол-во публикаций
+    var publicationsCount: Long? = 0,
+
+    // последняя дата публикации
+    var lastPublicationDate: Date? = null
 )

@@ -55,7 +55,7 @@ class OkHttpClientConfiguration {
     companion object {
         private fun loggingInterceptor(): Interceptor {
             val interceptor = HttpLoggingInterceptor()
-            interceptor.setLevel(HttpLoggingInterceptor.Level.NONE)
+            interceptor.level = HttpLoggingInterceptor.Level.BODY
             return interceptor
         }
     }
