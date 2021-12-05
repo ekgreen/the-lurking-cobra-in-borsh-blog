@@ -3,6 +3,7 @@ package com.lurking.cobra.blog.bot.impl.publication
 import com.lurking.cobra.blog.bot.api.publication.Publication
 import com.lurking.cobra.blog.bot.api.publication.PublisherService
 import com.lurking.cobra.blog.bot.api.publication.ReactionEvent
+import com.lurking.cobra.blog.bot.api.flow.recommendation.Recommendation
 import mu.KLogging
 
 
@@ -21,6 +22,10 @@ class PublisherServiceStub() : PublisherService {
     }
 
     override fun publicationReaction(eventBatch: ReactionEvent) {
+
+    }
+
+    override fun publishRecommendation(recommendation: Recommendation) {
 
     }
 

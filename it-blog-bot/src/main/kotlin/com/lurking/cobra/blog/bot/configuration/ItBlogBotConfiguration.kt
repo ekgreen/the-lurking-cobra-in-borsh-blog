@@ -33,6 +33,7 @@ class ItBlogBotConfiguration {
 
     companion object{
         const val PUBLICATION_SERVICE_EXCHANGER : String = "publication_exchange"
+        const val GENERATOR_SERVICE_EXCHANGER : String = "generator_exchange"
     }
 
     @Bean

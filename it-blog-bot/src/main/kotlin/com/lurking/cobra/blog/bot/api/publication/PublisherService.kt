@@ -1,5 +1,7 @@
 package com.lurking.cobra.blog.bot.api.publication
 
+import com.lurking.cobra.blog.bot.api.flow.recommendation.Recommendation
+
 interface PublisherService {
 
     /**
@@ -19,4 +21,10 @@ interface PublisherService {
      *
      */
     fun publicationReaction(eventBatch: ReactionEvent)
+
+    /**
+     *
+     *
+     */
+    fun publishRecommendation(recommendation: Recommendation)
 }

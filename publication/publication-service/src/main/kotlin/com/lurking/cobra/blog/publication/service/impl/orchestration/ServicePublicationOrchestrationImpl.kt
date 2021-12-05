@@ -66,9 +66,10 @@ class ServicePublicationOrchestrationImpl(
 
     override fun reactionEvent(event: ReactionEvent) {
 
-        val publicationEntity = publicationRepository.findById(event.publicationId).orElseThrow()
+        val publicationEntity: PublicationEntity = publicationRepository.findById(event.publicationId).orElseThrow()
 
         publicationEntity.reactions.handleReaction(event.reaction, event.count)
+        publicationEntity.reactionRating = (publicationEntity.reactions.likesCount + 2* publicationEntity.reactions.lightingCount - publicationEntity.reactions.pokerFaceCount).toDouble() / (publicationEntity.reactions.likesCount + publicationEntity.reactions.lightingCount + publicationEntity.reactions.pokerFaceCount).toDouble()
 
         publicationRepository.save(publicationEntity)
     }
@@ -104,6 +105,17 @@ class ServicePublicationOrchestrationImpl(
 
             // 3. [todo делаем позже] от 1 до 5 лет
         }
+
+        return publications.map { converter.convertEntityToModel(it) }
+    }
+
+    override fun createDigest(count: Int): List<Publication> {
+        val weeklyCriteria: Criteria = Criteria.where("last_publication").gte(LocalDateTime.now().minusDays(7)).lte(LocalDateTime.now())
+
+        val query: Query = Query(weeklyCriteria)
+            .with(Sort.by(Sort.Direction.DESC, "reaction_rating")).limit(count)
+
+        val publications = mongoTemplate.find(query, PublicationEntity::class.java, "publication")
 
         return publications.map { converter.convertEntityToModel(it) }
     }

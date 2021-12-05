@@ -4,8 +4,18 @@ telegram:
       token: ${it.blog.token.value} # registry have to produce methods aimed read placeholders from environment
       grabber:
         allowed_updates: [ MESSAGE, CALLBACK_QUERY, EDITED_CHANNEL_POST, CHANNEL_POST ]
+      flows:
+        - name: PublicationRecommendation
+          start: onCommand
+          command: /recommend
+  flows:
+    - name: PublicationRecommendation
+      generation:
+        type: sequential
+        sequential: Start, Enter, Title, Description, End
 
 ItBlog:
+  editor: ${it.blog.editor}
   channel: ${it.blog.channel}
 
 publication:

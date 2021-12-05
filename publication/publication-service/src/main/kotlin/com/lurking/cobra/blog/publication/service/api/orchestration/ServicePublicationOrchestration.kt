@@ -18,6 +18,8 @@ interface ServicePublicationOrchestration {
 
     fun findMostActualPublications(count: Int): List<Publication>
 
+    fun createDigest(count: Int): List<Publication>
+
     fun publicationEvent(event: PublicationEvent)
 
     fun reactionEvent(event: ReactionEvent)
