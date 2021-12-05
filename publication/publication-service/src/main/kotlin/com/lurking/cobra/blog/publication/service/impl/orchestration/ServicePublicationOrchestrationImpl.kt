@@ -16,6 +16,7 @@ import org.springframework.data.mongodb.core.aggregation.AddFieldsOperation.addF
 import org.springframework.data.mongodb.core.aggregation.Aggregation.*
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.mongodb.core.query.inValues
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*
@@ -111,7 +112,6 @@ class ServicePublicationOrchestrationImpl(
 
         // выбираем статьи растущие
         val statusGrowCriteria: Criteria= Criteria("strategy").`is`(PublicationStrategy.GROW)
-
         // выбираем статьи готовые к публикации
         val statusPublishingCriteria: Criteria= Criteria("strategy").`is`(PublicationStrategy.PUBLISHING)
 
@@ -119,7 +119,9 @@ class ServicePublicationOrchestrationImpl(
         val statusCriteria: Criteria = Criteria().orOperator(statusGrowCriteria, statusPublishingCriteria)
 
         // выбираем статьи по тегам
-        val tagsCriteria: Criteria = Criteria.where("tags").elemMatch(Criteria.where("tags").`is`(tags))
+        val tagsCriteria: Criteria = Criteria().andOperator( tags.map { Criteria.where("tags").inValues(it) })
+
+//            Criteria.where("tags").elemMatch(Criteria.where("tags").inValues(tags))
         //val tagsCriteria: Criteria = Criteria.where("tags").`is`(tags)
 
         // соединяем запрос statusCriteria и tagsCriteria логическим И

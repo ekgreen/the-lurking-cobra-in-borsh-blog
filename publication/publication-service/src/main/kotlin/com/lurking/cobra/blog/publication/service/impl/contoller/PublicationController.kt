@@ -29,6 +29,12 @@ class PublicationController(
         return orchestration.findMostActualPublications(count.toInt()).map { converter.convertModelToDto(it) }
     }
 
+    /** Метод для получения наиболее актуальных статей */
+    @GetMapping("/query")
+    fun getPublicationsByQuery(@RequestBody request: PublicationQueryRequest): List<PublicationDto> {
+        return orchestration.findPublicationsByTags(request.tags!!).map { converter.convertModelToDto(it) }
+    }
+
     /** Метод для поиска статьи по её id */
     @GetMapping("/view/{id}")
     fun findPublicationById(@PathVariable("id") id: String): PublicationDto {
