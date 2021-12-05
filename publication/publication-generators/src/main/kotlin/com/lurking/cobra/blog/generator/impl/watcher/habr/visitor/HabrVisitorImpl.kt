@@ -57,7 +57,7 @@ class HabrVisitorImpl(private val client: OkHttpClient, private val mapper: Obje
         return articlesId.map { id ->
             val article: Article = publicationInfo(id)
 
-            Publication(SOURCE_NAME, article.id.toString(), hub, LocalDateTime.parse(article.publishedTime, DateTimeFormatter.ISO_DATE_TIME) )
+            Publication(SOURCE_NAME, "https://habr.com/ru/post/${article.id}/", hub, LocalDateTime.parse(article.publishedTime, DateTimeFormatter.ISO_DATE_TIME) )
         }
     }
 
