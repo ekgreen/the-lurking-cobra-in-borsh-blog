@@ -36,6 +36,9 @@ data class PublicationEntity(
     @Field("statistic")
     var statistic: PublicationStatistic,
 
+    @Field("reaction_rating")
+    var reactionRating: Double?,
+
     @Field("reactions")
     var reactions: PublicationReactions,
 

@@ -29,6 +29,21 @@ class PublicationController(
         return orchestration.findMostActualPublications(count.toInt()).map { converter.convertModelToDto(it) }
     }
 
+    /** Метод для получения наиболее актуальных статей */
+    @GetMapping("/digest/{count}")
+    fun createDigest(@PathVariable("count") count: String): List<PublicationDto> {
+        if (count.isEmpty())
+            throw IllegalCallerException("Неверное значение count для получения наиболее актуальных публикаций")
+
+        return orchestration.createDigest(count.toInt()).map { converter.convertModelToDto(it) }
+    }
+
+    /** Метод для получения наиболее актуальных статей */
+    @PostMapping("/query")
+    fun getPublicationsByQuery(@RequestBody request: PublicationQueryRequest): List<PublicationDto> {
+        return orchestration.findPublicationsByTags(request.tags!!).map { converter.convertModelToDto(it) }
+    }
+
     /** Метод для поиска статьи по её id */
     @GetMapping("/view/{id}")
     fun findPublicationById(@PathVariable("id") id: String): PublicationDto {
