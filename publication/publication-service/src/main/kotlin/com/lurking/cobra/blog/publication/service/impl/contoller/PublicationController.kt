@@ -6,6 +6,8 @@ import com.lurking.cobra.blog.publication.service.api.model.mapper.PublicationMa
 import com.lurking.cobra.blog.publication.service.api.orchestration.ServicePublicationOrchestration
 import com.lurking.cobra.blog.publication.service.api.service.PublicationValidatorService
 import org.springframework.web.bind.annotation.*
+import java.time.LocalDateTime
+import java.time.Month
 
 /**
  * Контроллер сервиса публикаций, предоставляющий методы для взаимодействия с другими сервисами.
@@ -30,9 +32,16 @@ class PublicationController(
     }
 
     /** Метод для получения наиболее актуальных статей */
-    @GetMapping("/query")
+    @GetMapping("/publications_by_tags")
     fun getPublicationsByQuery(@RequestBody request: PublicationQueryRequest): List<PublicationDto> {
-        return orchestration.findPublicationsByTags(request.tags!!).map { converter.convertModelToDto(it) }
+        return orchestration.findPublicationsByTags(request.tags!!, request.count).map { converter.convertModelToDto(it) }
+    }
+
+    /** Метод для получения наиболее актуальных статей */
+    @GetMapping("/most_popular_publications")
+    fun getMostPopularPublications(): List<PublicationDto> {
+        return orchestration.findMostPopularPublications(LocalDateTime.of(2021, Month.DECEMBER, 1, 10, 10, 10),
+                                                         LocalDateTime.of(2021, Month.JULY, 1, 10, 10, 10)).map { converter.convertModelToDto(it) }
     }
 
     /** Метод для поиска статьи по её id */
