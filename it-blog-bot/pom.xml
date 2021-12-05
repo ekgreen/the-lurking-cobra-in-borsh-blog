@@ -38,7 +38,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>2.3.12.RELEASE</version>
+                <version>2.6.1</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -62,6 +62,10 @@
             <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-json</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-reflect</artifactId>
             <version>${kotlin.version}</version>
@@ -75,11 +79,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.amqp</groupId>
-            <artifactId>spring-rabbit-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

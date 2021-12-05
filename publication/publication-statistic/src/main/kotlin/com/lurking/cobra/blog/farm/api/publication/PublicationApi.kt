@@ -6,7 +6,7 @@ import com.lurking.cobra.blog.farm.api.publication.model.Publication
 interface PublicationApi {
 
     companion object {
-        private const val API_PATH  = "/publication-service/api/v1"
+        private const val API_PATH  = "/publication-service/api/v1/publication"
         const val VIEW_BY_ID_PATH   = "$API_PATH/view/"
         const val ADD_BY_ID_PATH    = "$API_PATH/add"
         const val EDIT_BY_ID_PATH   = "$API_PATH/edit/"
