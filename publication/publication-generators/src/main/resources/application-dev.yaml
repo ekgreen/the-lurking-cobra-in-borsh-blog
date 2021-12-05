@@ -1,0 +1,24 @@
+blog:
+  generator:
+    habr:
+      subscriptions:
+#        - name: skyeng
+#          type: COMPANY
+        - name: vk
+          type: COMPANY
+
+spring:
+  h2:
+    console:
+      path: /h2-console
+      enabled: true
+  jpa:
+    database: h2
+    open-in-view: false
+    hibernate:
+      ddl-auto: create-drop
+  datasource:
+    url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1;INIT=RUNSCRIPT FROM 'classpath:scripts/sql/test-data.sql'
+    name: db
+    username: sa
+    password: sa

@@ -1,0 +1,14 @@
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      authentication-database: admin
+      username: root
+      password: example
+      database: it_blog
+
+server:
+  servlet:
+    context-path: /publication-service
+  port: 8090

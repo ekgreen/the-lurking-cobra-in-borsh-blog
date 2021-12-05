@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: changeset/v-1.0/2021-12-03--01-initial-generator-schema-import.sql
+  - include:
+      file: changeset/v-1.0/2021-12-03--02-initial-habr-watcher-log-import.sql
+  - include:
+      file: changeset/v-1.0/2021-12-03--03-initial-generator-type-import.sql
+  - include:
+      file: changeset/v-1.0/2021-12-03--04-initial-generator-log-import.sql

@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: changeset/v-1.0/2021-12-03--01-initial-statistic-schema-import.sql
+  - include:
+      file: changeset/v-1.0/2021-12-03--02-initial-rating-scheduling-task-import.sql

@@ -1,0 +1,47 @@
+publication:
+  selection:
+    filters:
+      voter:
+        tags:
+          - [ "java" ]
+          - [ "mobile" ]
+      threshold:
+        publishing: 0.7
+        freeze: 0.25
+  grow:
+    strategy:
+      machine:
+        states:
+          - bound: 50
+            duration: "10s"
+          - bound: 30
+            duration: "30s"
+          - bound: 10
+            duration: "40s"
+          - bound: 0
+            duration: "60s"
+    scheduler:
+      delay: 3600
+      threads: 5
+  service:
+    url: http://localhost:8090
+
+server:
+  servlet:
+    context-path: /statistic
+
+spring:
+  h2:
+    console:
+      path: /h2-console
+      enabled: true
+  jpa:
+    database: h2
+    open-in-view: false
+    hibernate:
+      ddl-auto: create-drop
+  datasource:
+    url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS statistic
+    name: db
+    username: sa
+    password: sa
